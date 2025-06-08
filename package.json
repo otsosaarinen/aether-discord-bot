@@ -1,0 +1,30 @@
+{
+	"name": "osu-discord-helper",
+	"version": "1.0.0",
+	"description": "discord bot for osu! tournament management",
+	"homepage": "https://github.com/otsosaarinen/osu-discord-helper#readme",
+	"bugs": {
+		"url": "https://github.com/otsosaarinen/osu-discord-helper/issues"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/otsosaarinen/osu-discord-helper.git"
+	},
+	"license": "ISC",
+	"author": "",
+	"type": "module",
+	"main": "src/index.ts",
+	"scripts": {
+		"dev": "npx nodemon --exec \"tsx\" src/index.ts",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"dependencies": {
+		"discord.js": "^14.19.3",
+		"nodemon": "^3.1.10",
+		"tsx": "^4.19.4"
+	},
+	"devDependencies": {
+		"prettier": "^3.5.3",
+		"typescript": "^5.8.3"
+	}
+}

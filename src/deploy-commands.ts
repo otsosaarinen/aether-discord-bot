@@ -12,6 +12,7 @@ const CLIENT_ID = process.env.CLIENT_ID as string;
 const GUILD_ID = process.env.GUILD_ID as string;
 
 const commands = [];
+
 // Grab all the command folders from the commands directory you created earlier
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

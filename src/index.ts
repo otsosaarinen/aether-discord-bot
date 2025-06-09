@@ -66,6 +66,11 @@ for (const file of eventFiles) {
 	const event = await import(pathToFileURL(filePath).href);
 	const evt = event.default;
 
+	if (!evt || !evt.name || !evt.execute) {
+		console.warn(`[WARNING] Skipping invalid event at ${filePath}`);
+		continue;
+	}
+
 	if (evt.once) {
 		client.once(evt.name, (...args) => evt.execute(...args));
 	} else {

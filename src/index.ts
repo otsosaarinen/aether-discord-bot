@@ -2,7 +2,7 @@ import {
 	Client,
 	GatewayIntentBits,
 	Collection,
-	SlashCommandBuilder,
+	MessageFlags,
 } from "discord.js";
 import path from "path";
 import { fileURLToPath, pathToFileURL } from "url";
@@ -11,7 +11,6 @@ import dotenv from "dotenv";
 
 // initialize .env variables
 dotenv.config();
-
 const DISCORD_TOKEN = process.env.TOKEN;
 
 // extend the client class to add "commands" property
@@ -61,8 +60,37 @@ for (const folder of commandFolders) {
 	}
 }
 
-client.on("interactionCreate", (interaction) => {
-	console.log(interaction);
+client.on("interactionCreate", async (interaction) => {
+	if (!interaction.isChatInputCommand()) {
+		return;
+	} else {
+		const client = interaction.client as ExtendedClient;
+		const command = client.commands.get(interaction.commandName);
+
+		if (!command) {
+			console.error(
+				`No command matching ${interaction.commandName} was found.`,
+			);
+			return;
+		}
+
+		try {
+			await command.execute(interaction);
+		} catch (error) {
+			console.error(error);
+			if (interaction.replied || interaction.deferred) {
+				await interaction.followUp({
+					content: "There was an error while executing this command!",
+					flags: MessageFlags.Ephemeral,
+				});
+			} else {
+				await interaction.reply({
+					content: "There was an error while executing this command!",
+					flags: MessageFlags.Ephemeral,
+				});
+			}
+		}
+	}
 });
 
 client.login(DISCORD_TOKEN);

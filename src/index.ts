@@ -14,7 +14,7 @@ dotenv.config();
 const DISCORD_TOKEN = process.env.TOKEN;
 
 // extend the client class to add "commands" property
-class ExtendedClient extends Client {
+export class ExtendedClient extends Client {
 	public commands: Collection<string, any>;
 
 	constructor() {
@@ -30,10 +30,6 @@ class ExtendedClient extends Client {
 }
 
 const client = new ExtendedClient();
-
-client.once("ready", () => {
-	console.log(`Logged in as ${client.user?.tag}`);
-});
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -60,37 +56,21 @@ for (const folder of commandFolders) {
 	}
 }
 
-client.on("interactionCreate", async (interaction) => {
-	if (!interaction.isChatInputCommand()) {
-		return;
+const eventsPath = path.join(__dirname, "events");
+const eventFiles = readdirSync(eventsPath).filter((file) =>
+	file.endsWith(".ts"),
+);
+
+for (const file of eventFiles) {
+	const filePath = path.join(eventsPath, file);
+	const event = await import(pathToFileURL(filePath).href);
+	const evt = event.default;
+
+	if (evt.once) {
+		client.once(evt.name, (...args) => evt.execute(...args));
 	} else {
-		const client = interaction.client as ExtendedClient;
-		const command = client.commands.get(interaction.commandName);
-
-		if (!command) {
-			console.error(
-				`No command matching ${interaction.commandName} was found.`,
-			);
-			return;
-		}
-
-		try {
-			await command.execute(interaction);
-		} catch (error) {
-			console.error(error);
-			if (interaction.replied || interaction.deferred) {
-				await interaction.followUp({
-					content: "There was an error while executing this command!",
-					flags: MessageFlags.Ephemeral,
-				});
-			} else {
-				await interaction.reply({
-					content: "There was an error while executing this command!",
-					flags: MessageFlags.Ephemeral,
-				});
-			}
-		}
+		client.on(evt.name, (...args) => evt.execute(...args));
 	}
-});
+}
 
 client.login(DISCORD_TOKEN);

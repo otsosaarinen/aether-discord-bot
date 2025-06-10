@@ -58,6 +58,7 @@ async function listMajors(auth: OAuth2Client): Promise<void> {
 		spreadsheetId: "1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms",
 		range: "Class Data!A2:E",
 	});
+
 	const rows = res.data.values;
 
 	if (!rows || rows.length === 0) {
@@ -71,4 +72,23 @@ async function listMajors(auth: OAuth2Client): Promise<void> {
 	});
 }
 
-authorize().then(listMajors).catch(console.error);
+async function updateSheet(auth: OAuth2Client): Promise<void> {
+	const sheets = google.sheets({ version: "v4", auth });
+
+	const resource = [
+		["test", "asd"],
+		["discord", "bot"],
+	];
+
+	const res = await sheets.spreadsheets.values.update({
+		spreadsheetId: "1cJOBA-dWW_fn7G_w-9tWPNdQbOBvCqfmBLQeiQ8xbaw",
+		range: "Taulukko1!A2:B",
+		valueInputOption: "RAW",
+		requestBody: { values: resource },
+	});
+
+	console.log(res.data);
+}
+
+authorize().then(updateSheet).catch(console.error);
+//authorize().then(listMajors).catch(console.error);

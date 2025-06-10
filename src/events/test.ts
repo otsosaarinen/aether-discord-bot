@@ -7,7 +7,6 @@ export default {
 		if (message.author.bot) {
 			return;
 		} else {
-			await message.reply("test");
 			await message.react("😀");
 		}
 	},

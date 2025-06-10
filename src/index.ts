@@ -1,9 +1,4 @@
-import {
-	Client,
-	GatewayIntentBits,
-	Collection,
-	MessageFlags,
-} from "discord.js";
+import { Client, GatewayIntentBits, Collection } from "discord.js";
 import path from "path";
 import { fileURLToPath, pathToFileURL } from "url";
 import { readdirSync } from "fs";
@@ -29,8 +24,10 @@ export class ExtendedClient extends Client {
 	}
 }
 
+// initialize the client
 const client = new ExtendedClient();
 
+// get all the commands from the commands folder and execute them
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -56,6 +53,7 @@ for (const folder of commandFolders) {
 	}
 }
 
+// get all the events from the events folder and execute them
 const eventsPath = path.join(__dirname, "events");
 const eventFiles = readdirSync(eventsPath).filter((file) =>
 	file.endsWith(".ts"),

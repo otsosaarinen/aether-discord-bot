@@ -18,9 +18,6 @@ export async function execute(interaction: ChatInputCommandInteraction) {
 	try {
 		const auth = await authorize();
 
-		console.log(SHEET_DATA["sheet_id"]);
-		console.log(SHEET_DATA["tab_name"]);
-
 		if (
 			SHEET_DATA["sheet_id"].length > 0 &&
 			SHEET_DATA["tab_name"].length > 0

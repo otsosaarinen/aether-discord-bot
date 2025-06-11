@@ -2,7 +2,7 @@ import { SlashCommandBuilder, ChatInputCommandInteraction } from "discord.js";
 import { authorize, appendSheet } from "../../google/googleAPI.js";
 
 export const data = new SlashCommandBuilder()
-	.setName("sheet")
+	.setName("data")
 	.setDescription("Add data to the google sheet")
 	.addStringOption((option) =>
 		option

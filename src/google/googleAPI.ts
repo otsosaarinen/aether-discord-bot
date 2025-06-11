@@ -66,7 +66,7 @@ export async function connectSheet(
 	return res;
 }
 
-export async function appendSheet(
+export async function reschedule(
 	auth: OAuth2Client,
 	sheet_id: string,
 	tab_name: string,

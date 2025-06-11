@@ -36,7 +36,7 @@ export async function execute(interaction: ChatInputCommandInteraction) {
 				`Data added succesfully, command was used by ${interaction.user.username}`,
 			);
 		} else {
-			throw new Error("sheet_id or tab_name is missing");
+			await interaction.reply("sheet_id or tab_name is missing");
 		}
 	} catch (error) {
 		console.log(error);

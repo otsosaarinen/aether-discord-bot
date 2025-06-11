@@ -87,8 +87,4 @@ export async function updateSheet(
 		valueInputOption: "RAW",
 		requestBody: { values },
 	});
-
-	console.log("Added: ", res.data);
 }
-
-authorize().then(updateSheet).catch(console.error);

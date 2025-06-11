@@ -70,6 +70,7 @@ export async function reschedule(
 	auth: OAuth2Client,
 	sheet_id: string,
 	tab_name: string,
+	range: string,
 	rowData: (string | null)[],
 ): Promise<any> {
 	const sheets = google.sheets({ version: "v4", auth });
@@ -78,7 +79,7 @@ export async function reschedule(
 
 	const res = await sheets.spreadsheets.values.append({
 		spreadsheetId: sheet_id,
-		range: `${tab_name}!A1:Z`,
+		range: `${tab_name}!${range}`,
 		valueInputOption: "RAW",
 		requestBody: { values },
 	});

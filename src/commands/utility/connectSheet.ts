@@ -3,12 +3,12 @@ import { authorize, connectSheet } from "../../google/googleAPI.js";
 import { SHEET_DATA } from "../../memory.js";
 
 export const data = new SlashCommandBuilder()
-	.setName("sheet")
-	.setDescription("Connect bot to a sheet")
+	.setName("connect")
+	.setDescription("Connect the bot to a sheet")
 	.addStringOption((option) =>
 		option
 			.setName("sheet_id")
-			.setDescription("ID of the google sheet you want to connect to")
+			.setDescription("ID of the sheet you want to connect to")
 			.setRequired(true),
 	)
 	.addStringOption((option) =>

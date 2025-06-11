@@ -27,7 +27,7 @@ export async function execute(interaction: ChatInputCommandInteraction) {
 
 		await connectSheet(auth, sheet_id, tab_name);
 
-		SHEET_DATA["sheet id"] = sheet_id;
+		SHEET_DATA["sheet_id"] = sheet_id;
 		SHEET_DATA["tab_name"] = tab_name;
 
 		await interaction.reply("Succesfully connected!");

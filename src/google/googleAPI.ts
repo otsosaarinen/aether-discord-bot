@@ -51,6 +51,21 @@ export async function authorize(): Promise<OAuth2Client> {
 	return client;
 }
 
+export async function connectSheet(
+	auth: OAuth2Client,
+	sheet_id: string,
+	tab_name: string,
+): Promise<void> {
+	const sheets = google.sheets({ version: "v4", auth });
+
+	const res = await sheets.spreadsheets.values.get({
+		spreadsheetId: sheet_id,
+		range: `${tab_name}!A1`,
+	});
+
+	console.log(res);
+}
+
 export async function appendSheet(
 	auth: OAuth2Client,
 	data1: string,

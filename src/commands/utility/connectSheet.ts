@@ -23,14 +23,21 @@ export async function execute(interaction: ChatInputCommandInteraction) {
 	const tab_name = interaction.options.getString("tab_name", true);
 
 	try {
-		const auth = await authorize();
+		console.log(SHEET_DATA["whitelist"]);
+		console.log(interaction.user.username);
 
-		await connectSheet(auth, sheet_id, tab_name);
+		if (SHEET_DATA["whitelist"].includes(interaction.user.username)) {
+			const auth = await authorize();
 
-		SHEET_DATA["sheet_id"] = sheet_id;
-		SHEET_DATA["tab_name"] = tab_name;
+			await connectSheet(auth, sheet_id, tab_name);
 
-		await interaction.reply("Succesfully connected!");
+			SHEET_DATA["sheet_id"] = sheet_id;
+			SHEET_DATA["tab_name"] = tab_name;
+
+			await interaction.reply("Succesfully connected!");
+		} else {
+			await interaction.reply("User not whitelisted");
+		}
 	} catch (error) {
 		console.log(error);
 		await interaction.reply("Error occured while connecting to a sheet");

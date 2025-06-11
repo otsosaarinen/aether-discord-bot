@@ -55,7 +55,7 @@ export async function connectSheet(
 	auth: OAuth2Client,
 	sheet_id: string,
 	tab_name: string,
-): Promise<void> {
+): Promise<any> {
 	const sheets = google.sheets({ version: "v4", auth });
 
 	const res = await sheets.spreadsheets.values.get({
@@ -63,8 +63,7 @@ export async function connectSheet(
 		range: `${tab_name}!A1:Z`,
 	});
 
-	console.log(res);
-	console.log(res.data);
+	return res;
 }
 
 export async function appendSheet(
@@ -72,7 +71,7 @@ export async function appendSheet(
 	sheet_id: string,
 	tab_name: string,
 	data1: string,
-): Promise<void> {
+): Promise<any> {
 	const sheets = google.sheets({ version: "v4", auth });
 
 	const values = [[data1]];
@@ -84,5 +83,5 @@ export async function appendSheet(
 		requestBody: { values },
 	});
 
-	console.log(res);
+	return res;
 }

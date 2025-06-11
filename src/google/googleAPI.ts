@@ -36,7 +36,7 @@ async function saveCredentials(client: OAuth2Client): Promise<void> {
 	await fs.writeFile(TOKEN_PATH, payload);
 }
 
-async function authorize(): Promise<OAuth2Client> {
+export async function authorize(): Promise<OAuth2Client> {
 	let client = await loadSavedCredentialsIfExist();
 	if (client) return client;
 
@@ -72,22 +72,23 @@ async function listMajors(auth: OAuth2Client): Promise<void> {
 	});
 }
 
-async function updateSheet(auth: OAuth2Client): Promise<void> {
+export async function updateSheet(
+	auth: OAuth2Client,
+	data1: string,
+	data2?: string,
+): Promise<void> {
 	const sheets = google.sheets({ version: "v4", auth });
 
-	const resource = [
-		["test", "asd"],
-		["discord", "bot"],
-	];
+	const values = [[data1, data2]];
 
 	const res = await sheets.spreadsheets.values.append({
 		spreadsheetId: "1cJOBA-dWW_fn7G_w-9tWPNdQbOBvCqfmBLQeiQ8xbaw",
 		range: "Taulukko1!A1:B",
 		valueInputOption: "RAW",
-		requestBody: { values: resource },
+		requestBody: { values },
 	});
 
-	console.log(res.data);
+	console.log("Added: ", res.data);
 }
 
 authorize().then(updateSheet).catch(console.error);

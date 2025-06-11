@@ -69,11 +69,10 @@ export async function connectSheet(
 export async function appendSheet(
 	auth: OAuth2Client,
 	data1: string,
-	data2?: string,
 ): Promise<void> {
 	const sheets = google.sheets({ version: "v4", auth });
 
-	const values = [[data1, data2]];
+	const values = [[data1]];
 
 	const res = await sheets.spreadsheets.values.append({
 		spreadsheetId: "1cJOBA-dWW_fn7G_w-9tWPNdQbOBvCqfmBLQeiQ8xbaw",

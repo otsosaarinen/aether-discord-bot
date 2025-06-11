@@ -24,6 +24,7 @@ export async function execute(interaction: ChatInputCommandInteraction) {
 		const auth = await authorize();
 
 		await updateSheet(auth, data1, data2);
+
 		await interaction.reply(
 			`Data added succesfully, data added: ${data1} ${data2}`,
 		);

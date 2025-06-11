@@ -91,4 +91,3 @@ async function updateSheet(auth: OAuth2Client): Promise<void> {
 }
 
 authorize().then(updateSheet).catch(console.error);
-//authorize().then(listMajors).catch(console.error);

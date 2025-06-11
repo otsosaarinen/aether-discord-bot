@@ -60,10 +60,11 @@ export async function connectSheet(
 
 	const res = await sheets.spreadsheets.values.get({
 		spreadsheetId: sheet_id,
-		range: `${tab_name}!A1`,
+		range: `${tab_name}!A1:Z`,
 	});
 
 	console.log(res);
+	console.log(res.data);
 }
 
 export async function appendSheet(

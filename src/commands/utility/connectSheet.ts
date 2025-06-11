@@ -23,9 +23,6 @@ export async function execute(interaction: ChatInputCommandInteraction) {
 	const tab_name = interaction.options.getString("tab_name", true);
 
 	try {
-		console.log(SHEET_DATA["whitelist"]);
-		console.log(interaction.user.username);
-
 		if (SHEET_DATA["whitelist"].includes(interaction.user.username)) {
 			const auth = await authorize();
 

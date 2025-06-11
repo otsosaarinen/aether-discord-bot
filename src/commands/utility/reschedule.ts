@@ -1,9 +1,5 @@
 import { SlashCommandBuilder, ChatInputCommandInteraction } from "discord.js";
-import {
-	authorize,
-	appendSheet,
-	connectSheet,
-} from "../../google/googleAPI.js";
+import { authorize, reschedule, connectSheet } from "../../google/googleAPI.js";
 import { SHEET_DATA } from "../../memory.js";
 
 export const data = new SlashCommandBuilder()
@@ -48,14 +44,14 @@ export async function execute(interaction: ChatInputCommandInteraction) {
 			(row: string) => row == "Time",
 		);
 
+		console.log(date_column + " " + time_column);
+
 		let matchRowIndex = -1;
-		let player_index = -1;
 
 		for (let i = 1; i < sheetData.data.values.length; i++) {
 			for (let j = 0; j < sheetData.data.values[i].length; j++) {
 				if (interaction.user.username == sheetData.data.values[i][j]) {
-					matchRowIndex = i;
-					player_index = j;
+					matchRowIndex = i + 1;
 					break;
 				}
 			}
@@ -64,14 +60,17 @@ export async function execute(interaction: ChatInputCommandInteraction) {
 			}
 		}
 
-		// find correct row for the match
+		const range = `${String.fromCharCode(97 + date_column - 1)}${matchRowIndex}:${String.fromCharCode(97 + time_column)}${matchRowIndex}`;
 
-		/*await appendSheet(
+		const data = [null, date, time];
+
+		await reschedule(
 			auth,
 			SHEET_DATA["sheet_id"],
 			SHEET_DATA["tab_name"],
+			range,
 			data,
-		);*/
+		);
 
 		await interaction.reply(
 			`Match succesfully rescheduled, command was used by ${interaction.user.username}`,

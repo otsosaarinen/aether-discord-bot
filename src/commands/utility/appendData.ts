@@ -1,5 +1,6 @@
 import { SlashCommandBuilder, ChatInputCommandInteraction } from "discord.js";
 import { authorize, appendSheet } from "../../google/googleAPI.js";
+import { SHEET_DATA } from "../../memory.js";
 
 export const data = new SlashCommandBuilder()
 	.setName("add_data")
@@ -17,11 +18,26 @@ export async function execute(interaction: ChatInputCommandInteraction) {
 	try {
 		const auth = await authorize();
 
-		await appendSheet(auth, data);
+		console.log(SHEET_DATA["sheet_id"]);
+		console.log(SHEET_DATA["tab_name"]);
 
-		await interaction.reply(
-			`Data added succesfully, command was used by ${interaction.user.username}`,
-		);
+		if (
+			SHEET_DATA["sheet_id"].length > 0 &&
+			SHEET_DATA["tab_name"].length > 0
+		) {
+			await appendSheet(
+				auth,
+				SHEET_DATA["sheet_id"],
+				SHEET_DATA["tab_name"],
+				data,
+			);
+
+			await interaction.reply(
+				`Data added succesfully, command was used by ${interaction.user.username}`,
+			);
+		} else {
+			throw new Error("sheet_id or tab_name is missing");
+		}
 	} catch (error) {
 		console.log(error);
 		await interaction.reply("Error occured while updating the sheet");

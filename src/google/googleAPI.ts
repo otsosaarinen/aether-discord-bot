@@ -70,11 +70,11 @@ export async function reschedule(
 	auth: OAuth2Client,
 	sheet_id: string,
 	tab_name: string,
-	data1: string,
+	rowData: (string | null)[],
 ): Promise<any> {
 	const sheets = google.sheets({ version: "v4", auth });
 
-	const values = [[data1]];
+	const values = [rowData];
 
 	const res = await sheets.spreadsheets.values.append({
 		spreadsheetId: sheet_id,

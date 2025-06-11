@@ -1,5 +1,5 @@
 import { SlashCommandBuilder, ChatInputCommandInteraction } from "discord.js";
-import { authorize, updateSheet } from "../../google/googleAPI.js";
+import { authorize, appendSheet } from "../../google/googleAPI.js";
 
 export const data = new SlashCommandBuilder()
 	.setName("sheet")
@@ -23,10 +23,10 @@ export async function execute(interaction: ChatInputCommandInteraction) {
 	try {
 		const auth = await authorize();
 
-		await updateSheet(auth, data1, data2);
+		await appendSheet(auth, data1, data2);
 
 		await interaction.reply(
-			`Data added succesfully, data added: ${data1} ${data2}`,
+			`Data added succesfully, data added: ${data1} ${data2}, command was used by ${interaction.user.username}`,
 		);
 	} catch (error) {
 		console.log(error);

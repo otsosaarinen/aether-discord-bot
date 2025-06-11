@@ -51,7 +51,7 @@ export async function authorize(): Promise<OAuth2Client> {
 	return client;
 }
 
-export async function updateSheet(
+export async function appendSheet(
 	auth: OAuth2Client,
 	data1: string,
 	data2?: string,

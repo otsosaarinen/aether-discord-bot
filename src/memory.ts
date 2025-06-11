@@ -1,7 +1,7 @@
 export const SHEET_DATA: {
-	"sheet id": string | null;
-	tab_name: string | null;
+	"sheet id": string;
+	tab_name: string;
 } = {
-	"sheet id": null,
-	tab_name: null,
+	"sheet id": "",
+	tab_name: "",
 };

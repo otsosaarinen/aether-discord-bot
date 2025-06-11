@@ -5,7 +5,6 @@ import { google } from "googleapis";
 import { OAuth2Client } from "google-auth-library";
 import { fileURLToPath } from "url";
 
-// Needed for `__dirname` in ESM
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -50,26 +49,6 @@ export async function authorize(): Promise<OAuth2Client> {
 	}
 
 	return client;
-}
-
-async function listMajors(auth: OAuth2Client): Promise<void> {
-	const sheets = google.sheets({ version: "v4", auth });
-	const res = await sheets.spreadsheets.values.get({
-		spreadsheetId: "1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms",
-		range: "Class Data!A2:E",
-	});
-
-	const rows = res.data.values;
-
-	if (!rows || rows.length === 0) {
-		console.log("No data found.");
-		return;
-	}
-
-	console.log("Name, Major:");
-	rows.forEach((row) => {
-		console.log(`${row[0]}, ${row[4]}`);
-	});
 }
 
 export async function updateSheet(

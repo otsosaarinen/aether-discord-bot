@@ -1,6 +1,6 @@
 import { SlashCommandBuilder, ChatInputCommandInteraction } from "discord.js";
 import { authorize, connectSheet } from "../../google/googleAPI.js";
-import { SHEET_ID } from "../../memory.js";
+import { SHEET_DATA } from "../../memory.js";
 
 export const data = new SlashCommandBuilder()
 	.setName("sheet")
@@ -27,8 +27,8 @@ export async function execute(interaction: ChatInputCommandInteraction) {
 
 		await connectSheet(auth, sheet_id, tab_name);
 
-		SHEET_ID["sheet id"] = sheet_id;
-		SHEET_ID["tab_name"] = tab_name;
+		SHEET_DATA["sheet id"] = sheet_id;
+		SHEET_DATA["tab_name"] = tab_name;
 
 		await interaction.reply("Succesfully connected!");
 	} catch (error) {

@@ -80,9 +80,9 @@ async function updateSheet(auth: OAuth2Client): Promise<void> {
 		["discord", "bot"],
 	];
 
-	const res = await sheets.spreadsheets.values.update({
+	const res = await sheets.spreadsheets.values.append({
 		spreadsheetId: "1cJOBA-dWW_fn7G_w-9tWPNdQbOBvCqfmBLQeiQ8xbaw",
-		range: "Taulukko1!A2:B",
+		range: "Taulukko1!A1:B",
 		valueInputOption: "RAW",
 		requestBody: { values: resource },
 	});

@@ -77,7 +77,7 @@ export async function reschedule(
 
 	const values = [rowData];
 
-	const res = await sheets.spreadsheets.values.append({
+	const res = await sheets.spreadsheets.values.update({
 		spreadsheetId: sheet_id,
 		range: `${tab_name}!${range}`,
 		valueInputOption: "RAW",

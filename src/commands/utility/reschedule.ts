@@ -54,8 +54,6 @@ export async function execute(interaction: ChatInputCommandInteraction) {
 			(row: string) => row == "Time",
 		);
 
-		console.log(date_column + " " + time_column);
-
 		let matchRowIndex = -1;
 
 		for (let i = 1; i < sheetData.data.values.length; i++) {

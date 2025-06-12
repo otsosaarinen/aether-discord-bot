@@ -55,11 +55,13 @@ export async function execute(interaction: ChatInputCommandInteraction) {
 		);
 
 		let matchRowIndex = -1;
+		let match_id = null;
 
 		for (let i = 1; i < sheetData.data.values.length; i++) {
 			for (let j = 0; j < sheetData.data.values[i].length; j++) {
 				if (interaction.user.username == sheetData.data.values[i][j]) {
 					matchRowIndex = i + 1;
+					match_id = sheetData.data.values[i][0];
 					break;
 				}
 			}
@@ -81,7 +83,7 @@ export async function execute(interaction: ChatInputCommandInteraction) {
 		);
 
 		await interaction.reply(
-			`Match succesfully rescheduled, command was used by ${interaction.user.username}`,
+			`Match ID ${match_id} succesfully rescheduled, new time is ${date} ${time}`,
 		);
 	} catch (error) {
 		console.log(error);

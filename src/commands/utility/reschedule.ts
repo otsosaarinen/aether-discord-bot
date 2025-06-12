@@ -1,4 +1,9 @@
-import { SlashCommandBuilder, ChatInputCommandInteraction } from "discord.js";
+import {
+	SlashCommandBuilder,
+	ChatInputCommandInteraction,
+	MessageReaction,
+	User,
+} from "discord.js";
 import { authorize, reschedule, connectSheet } from "../../google/googleAPI.js";
 import { SHEET_DATA } from "../../memory.js";
 
@@ -56,12 +61,27 @@ export async function execute(interaction: ChatInputCommandInteraction) {
 
 		let matchRowIndex = -1;
 		let match_id = null;
+		let rescheduling_player = null;
+		let accepting_player = null;
+		let match_players: string[] | null = null;
 
 		for (let i = 1; i < sheetData.data.values.length; i++) {
 			for (let j = 0; j < sheetData.data.values[i].length; j++) {
 				if (interaction.user.username == sheetData.data.values[i][j]) {
 					matchRowIndex = i + 1;
 					match_id = sheetData.data.values[i][0];
+					rescheduling_player = sheetData.data.values[i][j];
+					match_players = [
+						sheetData.data.values[i][4],
+						sheetData.data.values[i][7],
+					];
+
+					if (match_players[0] == sheetData.data.values[i][j]) {
+						accepting_player = match_players[1];
+					} else {
+						accepting_player = match_players[0];
+					}
+
 					break;
 				}
 			}
@@ -70,21 +90,79 @@ export async function execute(interaction: ChatInputCommandInteraction) {
 			}
 		}
 
-		const range = `${String.fromCharCode(97 + date_column)}${matchRowIndex}:${String.fromCharCode(97 + time_column)}${matchRowIndex}`;
+		if (match_players) {
+			try {
+				interaction.reply(
+					`@${accepting_player} new suggested time for you **match ${match_id}** is **${date} ${time}**. React to this message if you accept the reschedule`,
+				);
 
-		const data = [date, time];
+				const message = await interaction.fetchReply(); // fetch the message just sent
+				await message.react("✅");
+				await message.react("❌");
 
-		await reschedule(
-			auth,
-			SHEET_DATA["sheet_id"],
-			SHEET_DATA["tab_name"],
-			range,
-			data,
-		);
+				const reactionFilter = (
+					reaction: MessageReaction,
+					user: User,
+				) => {
+					return (
+						["✅", "❌"].includes(reaction.emoji.name ?? "") &&
+						match_players.includes(user.username)
+					);
+				};
 
-		await interaction.reply(
-			`Match ID ${match_id} succesfully rescheduled, new time is ${date} ${time}`,
-		);
+				const collector = message.createReactionCollector({
+					filter: reactionFilter,
+					max: 1,
+					time: 86400_000,
+				});
+
+				collector.on("collect", async (reaction, user) => {
+					console.log(user.username);
+					if (reaction.emoji.name === "✅") {
+						await message.reply(
+							`${user.username} approved the reschedule ✅`,
+						);
+
+						const range = `${String.fromCharCode(97 + date_column)}${matchRowIndex}:${String.fromCharCode(97 + time_column)}${matchRowIndex}`;
+
+						const data = [date, time];
+
+						await reschedule(
+							auth,
+							SHEET_DATA["sheet_id"],
+							SHEET_DATA["tab_name"],
+							range,
+							data,
+						);
+
+						await interaction.followUp(
+							`Match **ID ${match_id}** succesfully rescheduled, new time is **${date} ${time}**`,
+						);
+					} else if (reaction.emoji.name === "❌") {
+						await message.reply(
+							`${user.username} declined the reschedule ❌`,
+						);
+						return;
+					}
+				});
+
+				collector.on("end", (collected) => {
+					if (collected.size === 0) {
+						message.reply("No response received in time ⌛");
+					}
+				});
+			} catch (error) {
+				console.log(error);
+				await interaction.reply(
+					"Error occured while rescheduling the match (reaction logic)",
+				);
+			}
+		} else {
+			interaction.reply(
+				"Could not find players for this match, contact @aetherian",
+			);
+			return;
+		}
 	} catch (error) {
 		console.log(error);
 		await interaction.reply("Error occured while rescheduling the match");

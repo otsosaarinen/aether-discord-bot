@@ -70,9 +70,9 @@ export async function execute(interaction: ChatInputCommandInteraction) {
 			}
 		}
 
-		const range = `${String.fromCharCode(97 + date_column - 1)}${matchRowIndex}:${String.fromCharCode(97 + time_column)}${matchRowIndex}`;
+		const range = `${String.fromCharCode(97 + date_column)}${matchRowIndex}:${String.fromCharCode(97 + time_column)}${matchRowIndex}`;
 
-		const data = [null, date, time];
+		const data = [date, time];
 
 		await reschedule(
 			auth,

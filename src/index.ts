@@ -1,4 +1,4 @@
-import { Client, GatewayIntentBits, Collection } from "discord.js";
+import { Client, GatewayIntentBits, Collection, Partials } from "discord.js";
 import path from "path";
 import { fileURLToPath, pathToFileURL } from "url";
 import { readdirSync } from "fs";
@@ -17,6 +17,7 @@ export class ExtendedClient extends Client {
 			intents: [
 				GatewayIntentBits.Guilds,
 				GatewayIntentBits.GuildMessages,
+				GatewayIntentBits.GuildMessageReactions,
 				GatewayIntentBits.MessageContent,
 			],
 		});

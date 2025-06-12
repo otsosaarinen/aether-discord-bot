@@ -23,6 +23,16 @@ export async function execute(interaction: ChatInputCommandInteraction) {
 	const time = interaction.options.getString("time", true);
 
 	try {
+		if (
+			SHEET_DATA["sheet_id"].length < 1 ||
+			SHEET_DATA["tab_name"].length < 0
+		) {
+			interaction.reply(
+				"sheet_id or tab_name missing, contact @aetherian",
+			);
+			return;
+		}
+
 		const auth = await authorize();
 
 		const sheetData = await connectSheet(

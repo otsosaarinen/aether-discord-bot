@@ -33,7 +33,9 @@ export async function execute(interaction: ChatInputCommandInteraction) {
 
 			await interaction.reply("Succesfully connected!");
 		} else {
-			await interaction.reply("User not whitelisted");
+			await interaction.reply(
+				"You are not whitelisted to use this command",
+			);
 		}
 	} catch (error) {
 		console.log(error);

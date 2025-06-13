@@ -5,7 +5,7 @@ dotenv.config();
 
 const router = Router();
 
-router.post("/osu/auth", async (req, res) => {
+router.post("/auth", async (req, res) => {
 	const code = req.body.code;
 
 	const CLIENT_ID = process.env.VITE_OSU_CLIENT_ID as string;
@@ -58,7 +58,6 @@ router.post("/osu/auth", async (req, res) => {
 			res.status(400).json({ message: "Something went wrong" });
 		}
 	} catch (error) {
-		console.log("adasd");
 		res.status(500).json({ error: "Internal server error" });
 	}
 });

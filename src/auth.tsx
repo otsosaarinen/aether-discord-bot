@@ -20,7 +20,8 @@ function Auth() {
 			// remove code from the url after it's used once
 			urlParams.delete("code");
 			const newUrl =
-				window.location.pathname + "?" + urlParams.toString();
+				window.location.pathname +
+				(urlParams.toString() ? "?" + urlParams.toString() : "");
 			window.history.replaceState(null, "", newUrl);
 
 			const getAccessToken = async (code: string) => {

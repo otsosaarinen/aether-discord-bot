@@ -7,8 +7,10 @@ import Auth from "./auth.tsx";
 createRoot(document.getElementById("root")!).render(
 	<StrictMode>
 		<BrowserRouter>
-			<Route path="/" element={<App />} />
-			<Route path="/auth" element={<Auth />} />
+			<Routes>
+				<Route path="/" element={<App />} />
+				<Route path="/auth" element={<Auth />} />
+			</Routes>
 		</BrowserRouter>
 	</StrictMode>,
 );

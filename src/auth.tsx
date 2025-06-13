@@ -76,8 +76,6 @@ function Auth() {
 					authEndpoint = "http://localhost:3001/api/discord/auth";
 				}
 
-				console.log(`Sent request to ${authEndpoint}`);
-
 				const tokenRes = await fetch(authEndpoint, {
 					method: "POST",
 					headers: {
@@ -88,8 +86,6 @@ function Auth() {
 				});
 
 				const tokenData = await tokenRes.json();
-
-				console.log(tokenData);
 
 				if (tokenRes.ok && provider === "osu") {
 					setOsuId(tokenData.id);

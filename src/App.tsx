@@ -4,7 +4,7 @@ import { Link } from "react-router";
 function App() {
 	return (
 		<>
-			<div className="font-poppins flex h-screen flex-row items-center justify-center bg-neutral-900">
+			<div className="font-poppins flex h-screen flex-col items-center justify-center bg-neutral-900">
 				<div className="flex w-200 flex-col items-center justify-center border-3 border-white p-5">
 					<h1 className="text-8xl font-bold text-[#4981ff]">5DST</h1>
 					<h2 className="text-5xl font-semibold text-white italic underline decoration-[#4981ff] decoration-2 underline-offset-4">

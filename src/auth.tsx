@@ -1,17 +1,48 @@
 import "./App.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function Auth() {
+	const OSU_CLIENT_ID = import.meta.env.VITE_OSU_CLIENT_ID as string;
+	const OSU_CLIENT_SECRET = import.meta.env.VITE_OSU_CLIENT_SECRET as string;
+	const OSU_REDIRECT_URI = import.meta.env.VITE_OSU_REDIRECT_URI as string;
+
 	const [discordStatus, setDiscordStatus] = useState<boolean>(false);
 	const [osuStatus, setOsuStatus] = useState<boolean>(false);
 
 	const osuAuthStart = () => {
-		const OSU_CLIENT_ID = import.meta.env.VITE_OSU_CLIENT_ID as string;
-		const OSU_REDIRECT_URI = import.meta.env
-			.VITE_OSU_REDIRECT_URI as string;
-
 		window.location.href = `https://osu.ppy.sh/oauth/authorize?client_id=${OSU_CLIENT_ID}&redirect_uri=${OSU_REDIRECT_URI}&response_type=code`;
 	};
+
+	useEffect(() => {
+		const urlParams = new URLSearchParams(window.location.search);
+		const code: string | null = urlParams.get("code");
+
+		if (code) {
+			const body = new URLSearchParams({
+				client_id: OSU_CLIENT_ID,
+				client_secret: OSU_CLIENT_SECRET,
+				code: code,
+				grant_type: "authorization_code",
+				redirect_uri: OSU_REDIRECT_URI,
+			});
+
+			const getAccessToken = async (code: string) => {
+				const response = await fetch("https://osu.ppy.sh/oauth/token", {
+					method: "POST",
+					headers: {
+						Accept: "application/json",
+						"Content-Type": "application/x-www-form-urlencoded",
+					},
+					body,
+				});
+
+				const data = await response.json();
+				console.log(data);
+			};
+
+			getAccessToken(code);
+		}
+	}, []);
 
 	return (
 		<>

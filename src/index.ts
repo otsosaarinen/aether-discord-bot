@@ -6,7 +6,7 @@ import dotenv from "dotenv";
 
 // initialize .env variables
 dotenv.config();
-const DISCORD_TOKEN = process.env.TOKEN;
+const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
 
 // extend the client class to add "commands" property
 export class ExtendedClient extends Client {

@@ -52,7 +52,7 @@ router.post("/osu/auth", async (req, res) => {
 			);
 
 			const profileData = await osuProfileData.json();
-			res.status(200).json({ profileData });
+			res.status(200).json(profileData);
 			return;
 		} else {
 			res.status(400).json({ message: "Something went wrong" });

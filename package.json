@@ -1,37 +1,42 @@
 {
-	"name": "osu-discord-helper",
-	"version": "1.0.0",
-	"description": "discord bot for osu! tournament management",
-	"homepage": "https://github.com/otsosaarinen/osu-discord-helper#readme",
-	"bugs": {
-		"url": "https://github.com/otsosaarinen/osu-discord-helper/issues"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/otsosaarinen/osu-discord-helper.git"
-	},
-	"license": "ISC",
-	"author": "",
-	"type": "module",
-	"main": "src/index.ts",
-	"scripts": {
-		"dev": "npx nodemon --watch src --exec \"tsx\" src/index.ts",
-		"deploy_commands": "npx tsx src/deploy-commands.ts"
-	},
-	"dependencies": {
-		"@google-cloud/local-auth": "^2.1.0",
-		"@prisma/client": "^6.9.0",
-		"@prisma/extension-accelerate": "^2.0.1",
-		"discord.js": "^14.19.3",
-		"dotenv": "^16.5.0",
-		"googleapis": "^105.0.0",
-		"nodemon": "^3.1.10",
-		"prisma": "^6.9.0",
-		"tsx": "^4.19.4"
-	},
-	"devDependencies": {
-		"@types/dotenv": "^6.1.1",
-		"prettier": "^3.5.3",
-		"typescript": "^5.8.3"
-	}
+    "name": "aether-discord-bot",
+    "private": true,
+    "version": "0.0.0",
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "tsc -b && vite build",
+        "lint": "eslint .",
+        "preview": "vite preview",
+        "deploy_commands": "npx tsx src/deploy-commands.ts",
+        "bot": "npx tsx src/index.ts"
+    },
+    "dependencies": {
+        "@google-cloud/local-auth": "^3.0.1",
+        "@prisma/client": "^6.9.0",
+        "@prisma/extension-accelerate": "^2.0.1",
+        "discord.js": "^14.19.3",
+        "dotenv": "^16.5.0",
+        "googleapis": "^150.0.1",
+        "nodemon": "^3.1.10",
+        "prisma": "^6.9.0",
+        "react": "^19.1.0",
+        "react-dom": "^19.1.0",
+        "tsx": "^4.20.3"
+    },
+    "devDependencies": {
+        "@eslint/js": "^9.25.0",
+        "@types/dotenv": "^6.1.1",
+        "@types/react": "^19.1.2",
+        "@types/react-dom": "^19.1.2",
+        "@vitejs/plugin-react": "^4.4.1",
+        "eslint": "^9.25.0",
+        "eslint-plugin-react-hooks": "^5.2.0",
+        "eslint-plugin-react-refresh": "^0.4.19",
+        "globals": "^16.0.0",
+        "prettier": "^3.5.3",
+        "typescript": "~5.8.3",
+        "typescript-eslint": "^8.30.1",
+        "vite": "^6.3.5"
+    }
 }

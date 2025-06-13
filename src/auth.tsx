@@ -12,49 +12,88 @@ function Auth() {
 	const [osuUsername, setOsuUsername] = useState<string>("");
 	const [osuId, setOsuId] = useState<number>();
 
-	const osuAuthStart = () => {
-		window.location.href = `https://osu.ppy.sh/oauth/authorize?client_id=${OSU_CLIENT_ID}&redirect_uri=${OSU_REDIRECT_URI}&response_type=code`;
+	const generateState = (provider: "osu" | "discord"): string => {
+		const randomUUID: string = crypto.randomUUID();
+		const state: string = provider + ":" + randomUUID;
+		return state;
 	};
 
-	const discordAuthStart = () => {
-		window.location.href = `https://discord.com/oauth2/authorize?client_id=${DISCORD_CLIENT_ID}&scope=identify&redirect_uri=${DISCORD_REDIRECT_URI}&response_type=code`;
+	const OauthStart = async (provider: "osu" | "discord") => {
+		const state = generateState(provider);
+		await fetch("http://localhost:3001/api/oauth/state", {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({ state, provider }),
+		});
+
+		if (provider == "osu") {
+			window.location.href = `https://osu.ppy.sh/oauth/authorize?client_id=${OSU_CLIENT_ID}&redirect_uri=${OSU_REDIRECT_URI}&response_type=code&state=${state}`;
+		} else if (provider == "discord") {
+			window.location.href = `https://discord.com/oauth2/authorize?client_id=${DISCORD_CLIENT_ID}&scope=identify&redirect_uri=${DISCORD_REDIRECT_URI}&response_type=code&state=${state}`;
+		}
 	};
 
 	useEffect(() => {
 		const urlParams = new URLSearchParams(window.location.search);
-		const code: string | null = urlParams.get("code");
+		const code = urlParams.get("code");
+		const state = urlParams.get("state");
 
-		if (code) {
-			// remove code from the url after it's used once
-			urlParams.delete("code");
-			const newUrl =
-				window.location.pathname +
-				(urlParams.toString() ? "?" + urlParams.toString() : "");
-			window.history.replaceState(null, "", newUrl);
+		if (!code || !state) {
+			return;
+		}
 
-			const getAccessToken = async (code: string) => {
-				const response = await fetch(
-					"http://localhost:3001/api/osu/auth",
+		urlParams.delete("code");
+		urlParams.delete("state");
+		const newUrl =
+			window.location.pathname +
+			(urlParams.toString() ? "?" + urlParams.toString() : "");
+		window.history.replaceState(null, "", newUrl);
+
+		const getAccessToken = async (code: string, state: string) => {
+			try {
+				const fetchProvider = await fetch(
+					"http://localhost:3001/api/oauth/provider",
 					{
 						method: "POST",
 						headers: {
 							"Content-Type": "application/json",
 						},
-						body: JSON.stringify({ code }),
+						body: JSON.stringify({ state }),
 					},
 				);
 
-				const data = await response.json();
+				if (!fetchProvider.ok)
+					throw new Error("Invalid state or provider");
 
-				if (response.ok) {
-					console.log(data);
-					setOsuId(data.id);
-					setOsuUsername(data.username);
+				const { provider } = await fetchProvider.json();
+
+				let authEndpoint = "";
+				if (provider === "osu") {
+					authEndpoint = "http://localhost:3001/api/osu/auth";
+				} else if (provider === "discord") {
+					authEndpoint = "http://localhost:3001/api/discord/auth";
 				}
-			};
 
-			getAccessToken(code);
-		}
+				const tokenRes = await fetch(authEndpoint, {
+					method: "POST",
+					headers: {
+						Accept: "application/json",
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({ code }),
+				});
+
+				const tokenData = await tokenRes.json();
+
+				if (tokenRes.ok && provider === "osu") {
+					setOsuId(tokenData.id);
+					setOsuUsername(tokenData.username);
+				}
+			} catch (error) {
+				console.log(error);
+			}
+		};
+		getAccessToken(code, state);
 	}, []);
 
 	return (
@@ -75,7 +114,7 @@ function Auth() {
 						<p>Discord ei yhdistetty</p>
 						<p
 							className="border-2 border-neutral-600 px-3 py-1 font-medium text-green-500 hover:cursor-pointer"
-							onClick={discordAuthStart}
+							onClick={() => OauthStart("discord")}
 						>
 							Yhdistä
 						</p>
@@ -89,7 +128,7 @@ function Auth() {
 						<p>osu! ei yhdistetty</p>
 						<p
 							className="border-2 border-neutral-600 px-3 py-1 font-medium text-green-500 hover:cursor-pointer"
-							onClick={osuAuthStart}
+							onClick={() => OauthStart("osu")}
 						>
 							Yhdistä
 						</p>

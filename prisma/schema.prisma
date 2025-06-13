@@ -23,4 +23,6 @@ model Player {
   discord_user_id Int
   discord_username String
   createdAt DateTime
+  rank String
+  country String
 }

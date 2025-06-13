@@ -5,11 +5,19 @@ function Auth() {
 	const OSU_CLIENT_ID = import.meta.env.VITE_OSU_CLIENT_ID as string;
 	const OSU_REDIRECT_URI = import.meta.env.VITE_OSU_REDIRECT_URI as string;
 
+	const DISCORD_CLIENT_ID = import.meta.env.VITE_DISCORD_CLIENT_ID as string;
+	const DISCORD_REDIRECT_URI = import.meta.env
+		.VITE_DISCORD_REDIRECT_URI as string;
+
 	const [osuUsername, setOsuUsername] = useState<string>("");
 	const [osuId, setOsuId] = useState<number>();
 
 	const osuAuthStart = () => {
 		window.location.href = `https://osu.ppy.sh/oauth/authorize?client_id=${OSU_CLIENT_ID}&redirect_uri=${OSU_REDIRECT_URI}&response_type=code`;
+	};
+
+	const discordAuthStart = () => {
+		window.location.href = `https://discord.com/oauth2/authorize?client_id=${DISCORD_CLIENT_ID}&scope=identify&redirect_uri=${DISCORD_REDIRECT_URI}&response_type=code`;
 	};
 
 	useEffect(() => {
@@ -65,7 +73,10 @@ function Auth() {
 							alt="discord logo"
 						/>
 						<p>Discord ei yhdistetty</p>
-						<p className="border-2 border-neutral-600 px-3 py-1 font-medium text-green-500 hover:cursor-pointer">
+						<p
+							className="border-2 border-neutral-600 px-3 py-1 font-medium text-green-500 hover:cursor-pointer"
+							onClick={discordAuthStart}
+						>
 							Yhdistä
 						</p>
 					</div>

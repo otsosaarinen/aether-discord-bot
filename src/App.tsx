@@ -1,4 +1,5 @@
 import "./App.css";
+import { Link } from "react-router";
 
 function App() {
 	return (
@@ -10,7 +11,7 @@ function App() {
 						5 Digit Suomi Turnaus
 					</h2>
 					<div className="mt-8 bg-[#4981ff] p-2 text-2xl text-white">
-						Rekisteröidy tästä
+						<Link to="/auth">Rekisteröidy tästä</Link>
 					</div>
 				</div>
 			</div>

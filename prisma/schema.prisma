@@ -22,4 +22,5 @@ model Player {
   osu_username String
   discord_user_id Int
   discord_username String
+  createdAt DateTime
 }

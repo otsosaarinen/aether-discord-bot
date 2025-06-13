@@ -16,8 +16,7 @@
 	"main": "src/index.ts",
 	"scripts": {
 		"dev": "npx nodemon --watch src --exec \"tsx\" src/index.ts",
-		"update_commands": "npx tsx src/deploy-commands.ts",
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"update_commands": "npx tsx src/deploy-commands.ts"
 	},
 	"dependencies": {
 		"@google-cloud/local-auth": "^2.1.0",

@@ -11,6 +11,8 @@ function Auth() {
 
 	const [osuUsername, setOsuUsername] = useState<string>("");
 	const [osuId, setOsuId] = useState<number>();
+	const [discordUsername, setdiscordUsername] = useState<string>("");
+	const [discordId, setdiscordId] = useState<number>();
 
 	const generateState = (provider: "osu" | "discord"): string => {
 		const randomUUID: string = crypto.randomUUID();
@@ -29,7 +31,7 @@ function Auth() {
 		if (provider == "osu") {
 			window.location.href = `https://osu.ppy.sh/oauth/authorize?client_id=${OSU_CLIENT_ID}&redirect_uri=${OSU_REDIRECT_URI}&response_type=code&state=${state}`;
 		} else if (provider == "discord") {
-			window.location.href = `https://discord.com/oauth2/authorize?client_id=${DISCORD_CLIENT_ID}&scope=identify&redirect_uri=${DISCORD_REDIRECT_URI}&response_type=code&state=${state}`;
+			window.location.href = `https://discord.com/oauth2/authorize?client_id=${DISCORD_CLIENT_ID}&scope=identify&prompt=none&redirect_uri=${DISCORD_REDIRECT_URI}&response_type=code&state=${state}`;
 		}
 	};
 
@@ -74,6 +76,8 @@ function Auth() {
 					authEndpoint = "http://localhost:3001/api/discord/auth";
 				}
 
+				console.log(`Sent request to ${authEndpoint}`);
+
 				const tokenRes = await fetch(authEndpoint, {
 					method: "POST",
 					headers: {
@@ -85,9 +89,14 @@ function Auth() {
 
 				const tokenData = await tokenRes.json();
 
+				console.log(tokenData);
+
 				if (tokenRes.ok && provider === "osu") {
 					setOsuId(tokenData.id);
 					setOsuUsername(tokenData.username);
+				} else if (tokenRes.ok && provider === "discord") {
+					setdiscordId(tokenData.user.id);
+					setdiscordUsername(tokenData.user.username);
 				}
 			} catch (error) {
 				console.log(error);
@@ -118,6 +127,8 @@ function Auth() {
 						>
 							Yhdistä
 						</p>
+						<p>discord id: {discordId}</p>
+						<p>discord username: {discordUsername}</p>
 					</div>
 					<div className="flex flex-col items-center justify-center gap-3">
 						<img

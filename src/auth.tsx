@@ -57,21 +57,21 @@ function Auth() {
 						5 Digit Suomi Turnaus 3
 					</h2>
 				</div>
-				<div className="flex flex-row gap-20 text-xl text-white">
+				<div className="flex flex-row items-start justify-center gap-20 text-xl text-white">
 					<div className="flex flex-col items-center justify-center gap-3">
 						<img
-							className="w-12 object-contain"
+							className="h-12 object-contain"
 							src="/discord_logo.png"
 							alt="discord logo"
 						/>
 						<p>Discord ei yhdistetty</p>
-						<p className="border-2 border-neutral-600 px-3 py-1 font-medium text-green-500">
+						<p className="border-2 border-neutral-600 px-3 py-1 font-medium text-green-500 hover:cursor-pointer">
 							Yhdistä
 						</p>
 					</div>
 					<div className="flex flex-col items-center justify-center gap-3">
 						<img
-							className="w-12 object-contain"
+							className="h-12 object-contain"
 							src="/osu_logo.png"
 							alt="osu! logo"
 						/>
@@ -85,6 +85,9 @@ function Auth() {
 						<p>osu id: {osuId}</p>
 						<p>osu username: {osuUsername}</p>
 					</div>
+				</div>
+				<div className="border-2 border-neutral-600 px-3 py-1 font-medium text-green-500 hover:cursor-pointer">
+					Continue
 				</div>
 			</div>
 		</>

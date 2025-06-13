@@ -5,8 +5,8 @@ function Auth() {
 	const OSU_CLIENT_ID = import.meta.env.VITE_OSU_CLIENT_ID as string;
 	const OSU_REDIRECT_URI = import.meta.env.VITE_OSU_REDIRECT_URI as string;
 
-	const [discordStatus, setDiscordStatus] = useState<boolean>(false);
-	const [osuStatus, setOsuStatus] = useState<boolean>(false);
+	const [osuUsername, setOsuUsername] = useState<string>("");
+	const [osuId, setOsuId] = useState<number>();
 
 	const osuAuthStart = () => {
 		window.location.href = `https://osu.ppy.sh/oauth/authorize?client_id=${OSU_CLIENT_ID}&redirect_uri=${OSU_REDIRECT_URI}&response_type=code`;
@@ -37,10 +37,11 @@ function Auth() {
 				);
 
 				const data = await response.json();
-				console.log(data);
 
 				if (response.ok) {
-					setOsuStatus(true);
+					console.log(data);
+					setOsuId(data.id);
+					setOsuUsername(data.username);
 				}
 			};
 
@@ -81,6 +82,8 @@ function Auth() {
 						>
 							Yhdistä
 						</p>
+						<p>osu id: {osuId}</p>
+						<p>osu username: {osuUsername}</p>
 					</div>
 				</div>
 			</div>

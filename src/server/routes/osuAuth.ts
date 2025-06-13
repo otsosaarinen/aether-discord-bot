@@ -37,7 +37,22 @@ router.post("/osu/auth", async (req, res) => {
 
 		if (response.ok) {
 			const data = await response.json();
-			res.status(200).json({ data });
+			const access_token = data.access_token;
+
+			const osuProfileData = await fetch(
+				"https://osu.ppy.sh/api/v2/me/osu",
+				{
+					method: "GET",
+					headers: {
+						"Content-Type": "application/json",
+						Accept: "application/json",
+						Authorization: `Bearer ${access_token}`,
+					},
+				},
+			);
+
+			const profileData = await osuProfileData.json();
+			res.status(200).json({ profileData });
 			return;
 		} else {
 			res.status(400).json({ message: "Something went wrong" });

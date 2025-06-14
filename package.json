@@ -1,35 +1,51 @@
 {
-	"name": "osu-discord-helper",
-	"version": "1.0.0",
-	"description": "discord bot for osu! tournament management",
-	"homepage": "https://github.com/otsosaarinen/osu-discord-helper#readme",
-	"bugs": {
-		"url": "https://github.com/otsosaarinen/osu-discord-helper/issues"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/otsosaarinen/osu-discord-helper.git"
-	},
-	"license": "ISC",
-	"author": "",
+	"name": "aether-discord-bot",
+	"private": true,
+	"version": "0.0.0",
 	"type": "module",
-	"main": "src/index.ts",
 	"scripts": {
-		"dev": "npx nodemon --watch src --exec \"tsx\" src/index.ts",
-		"cmd": "npx tsx src/deploy-commands.ts",
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"dev": "vite",
+		"build": "tsc -b && vite build",
+		"lint": "eslint .",
+		"preview": "vite preview",
+		"deploy_commands": "npx tsx src/deploy-commands.ts",
+		"bot": "npx nodemon --watch src --exec \"tsx\" src/index.ts",
+		"server": "npx tsx src/server/index.ts"
 	},
 	"dependencies": {
 		"@google-cloud/local-auth": "^2.1.0",
+		"@prisma/client": "^6.9.0",
+		"@prisma/extension-accelerate": "^2.0.1",
+		"@tailwindcss/vite": "^4.1.10",
+		"cors": "^2.8.5",
 		"discord.js": "^14.19.3",
 		"dotenv": "^16.5.0",
+		"express": "^5.1.0",
 		"googleapis": "^105.0.0",
 		"nodemon": "^3.1.10",
-		"tsx": "^4.19.4"
+		"prisma": "^6.9.0",
+		"react": "^19.1.0",
+		"react-dom": "^19.1.0",
+		"react-router": "^7.6.2",
+		"tailwindcss": "^4.1.10",
+		"tsx": "^4.20.3"
 	},
 	"devDependencies": {
+		"@eslint/js": "^9.25.0",
+		"@types/cors": "^2.8.19",
 		"@types/dotenv": "^6.1.1",
+		"@types/express": "^5.0.3",
+		"@types/react": "^19.1.2",
+		"@types/react-dom": "^19.1.2",
+		"@vitejs/plugin-react": "^4.4.1",
+		"eslint": "^9.25.0",
+		"eslint-plugin-react-hooks": "^5.2.0",
+		"eslint-plugin-react-refresh": "^0.4.19",
+		"globals": "^16.0.0",
 		"prettier": "^3.5.3",
-		"typescript": "^5.8.3"
+		"prettier-plugin-tailwindcss": "^0.6.12",
+		"typescript": "~5.8.3",
+		"typescript-eslint": "^8.30.1",
+		"vite": "^6.3.5"
 	}
 }

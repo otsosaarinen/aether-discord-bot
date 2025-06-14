@@ -20,25 +20,39 @@ router.post("/state", async (req, res) => {
 		await saveState(state, provider);
 
 		res.status(200).send("State saved");
+		return;
 	} catch (error) {
 		console.log(error);
 		res.status(500).send("Error with saving state and provider");
+		return;
 	}
 });
 
 // check if the initial state matches the state after being redirected to callback url
 router.post("/provider", async (req, res) => {
-	const { state } = req.body;
+	try {
+		const { state } = req.body;
 
-	// fetch state saved to db and compare it with state received from client
-	const data = await fetchState(state);
+		if (!state) {
+			res.status(400).send("State is missing");
+			return;
+		}
 
-	if (!data) {
-		res.status(400).send("Invalid state");
+		// fetch state saved to db and compare it with state received from client
+		const data = await fetchState(state);
+
+		if (!data) {
+			res.status(400).send("Invalid state");
+			return;
+		}
+
+		res.status(200).json({ provider: data.provider });
+		return;
+	} catch (error) {
+		console.log(error);
+		res.status(500).send("Internal server error");
 		return;
 	}
-
-	res.status(200).json({ provider: data.provider });
 });
 
 export default router;

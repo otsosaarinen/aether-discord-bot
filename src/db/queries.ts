@@ -62,6 +62,24 @@ export async function fetchSheetId(): Promise<string> {
 	return sheet_id?.sheet_id;
 }
 
+export async function addOsuDataToDb(
+	osu_id: number,
+	osu_username: string,
+	rank: number,
+	country: string,
+) {
+	const osuData = await prisma.player.create({
+		data: {
+			osu_id: osu_id,
+			osu_username: osu_username,
+			rank: rank,
+			country: country,
+		},
+	});
+
+	console.log(osuData);
+}
+
 export async function createPlayer(
 	osu_id: number,
 	osu_username: string,

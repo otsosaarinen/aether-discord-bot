@@ -1,5 +1,6 @@
 import { Router } from "express";
 import dotenv from "dotenv";
+import { addOsuDataToDb } from "../../db/queries";
 
 dotenv.config();
 
@@ -53,13 +54,12 @@ router.post("/", async (req, res) => {
 
 			const profileData = await osuProfileData.json();
 
-			const userObject = {
-				id: profileData.id,
-				username: profileData.username,
-				rank: profileData.statistics_rulesets.osu.global_rank,
-				country: profileData.country_code,
-			};
-			console.log(userObject);
+			await addOsuDataToDb(
+				profileData.id,
+				profileData.username,
+				profileData.statistics_rulesets.osu.global_rank,
+				profileData.country_code,
+			);
 
 			res.status(200).json(profileData);
 			return;

@@ -11,7 +11,7 @@ export async function saveState(state: string, provider: string) {
 		},
 	});
 
-	console.log("Saved state to db: ", oauth_state);
+	return oauth_state;
 }
 
 export async function fetchState(clientState: string) {
@@ -32,54 +32,116 @@ export async function fetchState(clientState: string) {
 		},
 	});
 
-	console.log("State after using: ", editToUsed);
-
 	return editToUsed;
 }
 
 export async function addSheetToDb(sheet_id: string) {
-	const deleteExistingSheet = await prisma.sheet.deleteMany({});
-
-	console.log("Deleted sheet: ", deleteExistingSheet);
+	// Delete existing sheets
+	await prisma.sheet.deleteMany({});
 
 	const sheet = await prisma.sheet.create({
 		data: {
 			sheet_id: sheet_id,
 		},
 	});
-	console.log("New sheet added: ", sheet);
+
+	return sheet;
 }
 
-export async function fetchSheetId(): Promise<string> {
+export async function fetchSheetId() {
 	const sheet_id = await prisma.sheet.findFirst();
 
 	if (!sheet_id) {
-		throw new Error("No sheet ID found from the database");
+		return "No sheet ID found from the database";
 	}
-
-	console.log("Sheet ID found: ", sheet_id?.sheet_id);
 
 	return sheet_id?.sheet_id;
 }
 
-export async function createPlayer(
-	osu_id: number,
-	osu_username: string,
-	discord_user_id: number,
-	discord_username: string,
-	rank: string,
-	country: string,
-) {
-	const user = await prisma.player.create({
+export async function addOsuDataToDb({
+	osu_id,
+	osu_username,
+	rank,
+	country,
+}: {
+	osu_id: number;
+	osu_username: string;
+	rank: number;
+	country: string;
+}) {
+	const osuData = await prisma.player.create({
 		data: {
 			osu_id: osu_id,
 			osu_username: osu_username,
-			discord_user_id: discord_user_id,
-			discord_username: discord_username,
 			rank: rank,
 			country: country,
 		},
 	});
+	return osuData;
+}
 
-	console.log(user);
+export async function addDiscordDataToDb({
+	osu_id,
+	discord_id,
+	discord_username,
+}: {
+	osu_id: number;
+	discord_id: string;
+	discord_username: string;
+}) {
+	const discordData = await prisma.player.update({
+		where: {
+			osu_id: osu_id,
+		},
+		data: {
+			discord_id: discord_id,
+			discord_username: discord_username,
+		},
+	});
+
+	return discordData;
+}
+
+export async function fetchOauthStatus(osu_id: number) {
+	const status = await prisma.player.findFirst({
+		where: {
+			osu_id: osu_id,
+		},
+	});
+
+	if (!status) {
+		return "No oauth status found from the db";
+	}
+
+	return status;
+}
+
+export async function updateOsuOauthStatus(
+	osu_id: number,
+	newOauthStatus: boolean,
+) {
+	const status = await prisma.player.update({
+		where: {
+			osu_id: osu_id,
+		},
+		data: {
+			osuOauthDone: newOauthStatus,
+		},
+	});
+	return status;
+}
+
+export async function updateDiscordOauthStatus(
+	osu_id: number,
+	newOauthStatus: boolean,
+) {
+	const status = await prisma.player.update({
+		where: {
+			osu_id: osu_id,
+		},
+		data: {
+			discordOauthDone: newOauthStatus,
+		},
+	});
+	return status;
 }

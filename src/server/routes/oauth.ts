@@ -1,6 +1,7 @@
 import { Router } from "express";
-import { saveState, fetchState } from "../../db/queries";
+import { saveState, fetchState, fetchOauthStatus } from "../../db/queries";
 import dotenv from "dotenv";
+import jwt from "jsonwebtoken";
 
 dotenv.config();
 
@@ -53,6 +54,24 @@ router.post("/provider", async (req, res) => {
 		res.status(500).send("Internal server error");
 		return;
 	}
+});
+
+router.get("/status", async (req, res) => {
+	const JWT_SECRET = process.env.JWT_SECRET as string;
+
+	let verifyJwt: any;
+
+	try {
+		verifyJwt = jwt.verify(req.cookies.token, JWT_SECRET);
+	} catch (error) {
+		console.log(error);
+		res.status(400).send("Problem with JWT");
+		return;
+	}
+
+	const response = await fetchOauthStatus(verifyJwt.id);
+
+	res.status(200).json(response);
 });
 
 export default router;

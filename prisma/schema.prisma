@@ -21,10 +21,12 @@ model Player {
   id Int @id @unique @default(autoincrement())
   osu_id  Int @unique
   osu_username String @unique
-  discord_user_id Int 
-  discord_username String
-  rank String
+  discord_id String? 
+  discord_username String?
+  rank Int
   country String
+  osuOauthDone Boolean @default(false)
+  discordOauthDone Boolean @default(false)
   createdAt DateTime @default(now())
 }
 

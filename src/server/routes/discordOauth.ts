@@ -1,5 +1,7 @@
 import { Router } from "express";
 import dotenv from "dotenv";
+import jwt from "jsonwebtoken";
+import { addDiscordDataToDb, updateDiscordOauthStatus } from "../../db/queries";
 
 dotenv.config();
 
@@ -11,9 +13,20 @@ router.post("/", async (req, res) => {
 	const CLIENT_ID = process.env.VITE_DISCORD_CLIENT_ID as string;
 	const CLIENT_SECRET = process.env.VITE_DISCORD_CLIENT_SECRET as string;
 	const REDIRECT_URI = process.env.VITE_DISCORD_REDIRECT_URI as string;
+	const JWT_SECRET = process.env.JWT_SECRET as string;
 
 	if (!CLIENT_ID || !CLIENT_SECRET || !REDIRECT_URI) {
 		res.status(500).json({ error: "Missing environment variables" });
+		return;
+	}
+
+	let verifyJwt: any;
+
+	try {
+		verifyJwt = jwt.verify(req.cookies.token, JWT_SECRET);
+	} catch (error) {
+		console.log(error);
+		res.status(400).send("Problem with JWT");
 		return;
 	}
 
@@ -52,6 +65,19 @@ router.post("/", async (req, res) => {
 			);
 
 			const profileData = await discordProfileData.json();
+
+			const userObject = {
+				osu_id: verifyJwt.id,
+				discord_id: profileData.user.id,
+				discord_username: profileData.user.username,
+			};
+
+			await addDiscordDataToDb(userObject);
+
+			console.log(`DISCORD: ${profileData.user.username} added to db`);
+
+			await updateDiscordOauthStatus(verifyJwt.id, true);
+
 			res.status(200).json(profileData);
 			return;
 		} else {

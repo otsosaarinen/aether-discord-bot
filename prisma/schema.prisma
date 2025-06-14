@@ -23,7 +23,7 @@ model Player {
   osu_username String @unique
   discord_user_id Int? 
   discord_username String?
-  rank String
+  rank Int
   country String
   createdAt DateTime @default(now())
 }

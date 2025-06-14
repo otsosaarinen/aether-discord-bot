@@ -1,11 +1,10 @@
 import { Router } from "express";
+import { saveState, fetchState } from "../../db/queries";
 import dotenv from "dotenv";
 
 dotenv.config();
 
 const router = Router();
-
-const oauthStates = new Map<string, { provider: string; createdAt: number }>();
 
 // saved the initial state before user is redirected to oauth page
 router.post("/state", async (req, res) => {
@@ -16,12 +15,10 @@ router.post("/state", async (req, res) => {
 			res.status(400).send("Missing state or provider");
 			return;
 		}
-		oauthStates.set(state, {
-			provider,
-			createdAt: Date.now(),
-		});
 
-		console.log(`Saved state: ${state}, provider: ${provider}`);
+		// save state and provider to db
+		await saveState(state, provider);
+
 		res.status(200).send("State saved");
 	} catch (error) {
 		console.log(error);
@@ -33,13 +30,14 @@ router.post("/state", async (req, res) => {
 router.post("/provider", async (req, res) => {
 	const { state } = req.body;
 
-	const data = oauthStates.get(state);
+	// fetch state saved to db and compare it with state received from client
+	const data = await fetchState(state);
+
 	if (!data) {
 		res.status(400).send("Invalid state");
 		return;
 	}
 
-	console.log(`Loaded state: ${state}, provider: ${data.provider}`);
 	res.status(200).json({ provider: data.provider });
 });
 

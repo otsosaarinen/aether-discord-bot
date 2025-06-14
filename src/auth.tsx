@@ -21,7 +21,7 @@ function Auth() {
 		return randomUUID;
 	};
 
-	// generates state and sends it to to backend for saving, redirects user to either osu/discord oauth page based on the provider value
+	// generates state and sends it to to backend, redirects user to either osu/discord oauth page based on the provider value
 	const OauthStart = async (provider: "osu" | "discord") => {
 		const state = generateState();
 
@@ -38,7 +38,7 @@ function Auth() {
 		}
 	};
 
-	// when page loads check if url has code and state parameters and exit function if they dont exist
+	// when page loads check if url has code and state parameters, exit function if they dont exist
 	useEffect(() => {
 		const urlParams = new URLSearchParams(window.location.search);
 		const code = urlParams.get("code");
@@ -72,7 +72,9 @@ function Auth() {
 				if (!fetchProvider.ok)
 					throw new Error("Invalid state or provider");
 
-				const { provider } = await fetchProvider.json();
+				// extract provider from succesful state match request, sends request either to osu or discord api to exchange code to access token
+				const data = await fetchProvider.json();
+				const provider = data.provider;
 
 				let authEndpoint = "";
 				if (provider === "osu") {
@@ -81,7 +83,7 @@ function Auth() {
 					authEndpoint = "http://localhost:3001/oauth/discord";
 				}
 
-				const tokenRes = await fetch(authEndpoint, {
+				const accessTokenExchange = await fetch(authEndpoint, {
 					method: "POST",
 					headers: {
 						Accept: "application/json",
@@ -90,14 +92,15 @@ function Auth() {
 					body: JSON.stringify({ code }),
 				});
 
-				const tokenData = await tokenRes.json();
+				// save data to userData variable and hydrate page based on provider value
+				const userData = await accessTokenExchange.json();
 
-				if (tokenRes.ok && provider === "osu") {
-					setOsuId(tokenData.id);
-					setOsuUsername(tokenData.username);
-				} else if (tokenRes.ok && provider === "discord") {
-					setdiscordId(tokenData.user.id);
-					setdiscordUsername(tokenData.user.username);
+				if (accessTokenExchange.ok && provider === "osu") {
+					setOsuId(userData.id);
+					setOsuUsername(userData.username);
+				} else if (accessTokenExchange.ok && provider === "discord") {
+					setdiscordId(userData.user.id);
+					setdiscordUsername(userData.user.username);
 				}
 			} catch (error) {
 				console.log(error);

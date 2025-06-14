@@ -7,6 +7,7 @@ const router = Router();
 
 const oauthStates = new Map<string, { provider: string; createdAt: number }>();
 
+// saved the initial state before user is redirected to oauth page
 router.post("/state", async (req, res) => {
 	try {
 		const { state, provider } = req.body;
@@ -28,6 +29,7 @@ router.post("/state", async (req, res) => {
 	}
 });
 
+// check if the initial state matches the state after being redirected to callback url
 router.post("/provider", async (req, res) => {
 	const { state } = req.body;
 

@@ -24,6 +24,7 @@ function Auth() {
 	// generates state and sends it to to backend for saving, redirects user to either osu/discord oauth page based on the provider value
 	const OauthStart = async (provider: "osu" | "discord") => {
 		const state = generateState();
+		console.log("Initial state: ", state);
 		await fetch("http://localhost:3001/oauth/state", {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },

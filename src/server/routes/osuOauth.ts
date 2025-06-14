@@ -52,6 +52,15 @@ router.post("/", async (req, res) => {
 			);
 
 			const profileData = await osuProfileData.json();
+
+			const userObject = {
+				id: profileData.id,
+				username: profileData.username,
+				rank: profileData.statistics_rulesets.osu.global_rank,
+				country: profileData.country_code,
+			};
+			console.log(userObject);
+
 			res.status(200).json(profileData);
 			return;
 		} else {

@@ -21,8 +21,8 @@ model Player {
   id Int @id @unique @default(autoincrement())
   osu_id  Int @unique
   osu_username String @unique
-  discord_user_id Int 
-  discord_username String
+  discord_user_id Int? 
+  discord_username String?
   rank String
   country String
   createdAt DateTime @default(now())

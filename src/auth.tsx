@@ -1,5 +1,7 @@
 import "./App.css";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
+import { Link } from "react-router";
+import Button from "@mui/material/Button";
 
 function Auth() {
 	// initialize environment variables
@@ -9,11 +11,6 @@ function Auth() {
 	const DISCORD_CLIENT_ID = import.meta.env.VITE_DISCORD_CLIENT_ID as string;
 	const DISCORD_REDIRECT_URI = import.meta.env
 		.VITE_DISCORD_REDIRECT_URI as string;
-
-	const [osuUsername, setOsuUsername] = useState<string>("");
-	const [osuId, setOsuId] = useState<number>();
-	const [discordUsername, setdiscordUsername] = useState<string>("");
-	const [discordId, setdiscordId] = useState<number>();
 
 	// generates random UUID and attaches it to state variable with provider
 	const generateState = (): string => {
@@ -100,11 +97,9 @@ function Auth() {
 				const userData = await accessTokenExchange.json();
 
 				if (accessTokenExchange.ok && provider === "osu") {
-					setOsuId(userData.id);
-					setOsuUsername(userData.username);
+					console.log("osu success");
 				} else if (accessTokenExchange.ok && provider === "discord") {
-					setdiscordId(userData.user.id);
-					setdiscordUsername(userData.user.username);
+					console.log("discord success");
 				}
 			} catch (error) {
 				console.log(error);
@@ -115,45 +110,56 @@ function Auth() {
 
 	return (
 		<>
-			<div className="font-poppins flex h-screen flex-col items-center justify-center gap-10 bg-neutral-900 text-white">
-				<div className="flex flex-col items-center justify-center">
-					<h1 className="text-8xl font-bold text-[#4981ff] italic">
-						5<span className="text-white">DST</span>3
-					</h1>
+			<div className="font-poppins flex h-screen flex-col justify-between bg-neutral-900 text-white">
+				<div className="flex flex-col items-center justify-center gap-10 py-30">
+					<div className="flex flex-col items-center justify-center">
+						<h1 className="text-8xl font-bold text-[#4981ff] italic">
+							5<span className="text-white">DST</span>3
+						</h1>
+					</div>
+					<div className="flex flex-col items-center justify-center gap-10 text-xl text-white">
+						<div className="flex flex-col items-center justify-center gap-3">
+							<img
+								className="w-12 object-contain"
+								src="/osu_logo.png"
+								alt="osu! logo"
+							/>
+							<p>Vaihe 1. Yhdistä osu! käyttäjäsi</p>
+
+							<Button
+								variant="contained"
+								onClick={() => OauthStart("osu")}
+							>
+								Yhdistä
+							</Button>
+						</div>
+						<div className="flex flex-col items-center justify-center gap-3">
+							<img
+								className="w-12 object-contain"
+								src="/discord_logo.png"
+								alt="discord logo"
+							/>
+							<p>Vaihe 2. Yhdistä Discord käyttäjäsi</p>
+
+							<Button
+								variant="contained"
+								onClick={() => OauthStart("discord")}
+							>
+								Yhdistä
+							</Button>
+						</div>
+					</div>
 				</div>
-				<div className="flex flex-row items-start justify-center gap-20 text-xl text-white">
-					<div className="flex flex-col items-center justify-center gap-3">
-						<img
-							className="h-12 object-contain"
-							src="/discord_logo.png"
-							alt="discord logo"
-						/>
-						<p>Discord ei yhdistetty</p>
-						<p
-							className="border-2 border-neutral-600 px-3 py-1 font-medium text-green-500 hover:cursor-pointer"
-							onClick={() => OauthStart("discord")}
+				<div className="flex h-15 w-full items-center justify-center bg-[#4981ff]">
+					<p>
+						Site developed by{" "}
+						<Link
+							to="https://osu.ppy.sh/users/6263040"
+							className="hover:underline"
 						>
-							Yhdistä
-						</p>
-						<p>discord id: {discordId}</p>
-						<p>discord username: {discordUsername}</p>
-					</div>
-					<div className="flex flex-col items-center justify-center gap-3">
-						<img
-							className="h-12 object-contain"
-							src="/osu_logo.png"
-							alt="osu! logo"
-						/>
-						<p>osu! ei yhdistetty</p>
-						<p
-							className="border-2 border-neutral-600 px-3 py-1 font-medium text-green-500 hover:cursor-pointer"
-							onClick={() => OauthStart("osu")}
-						>
-							Yhdistä
-						</p>
-						<p>osu id: {osuId}</p>
-						<p>osu username: {osuUsername}</p>
-					</div>
+							Aetherian
+						</Link>
+					</p>
 				</div>
 			</div>
 		</>

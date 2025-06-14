@@ -3,6 +3,16 @@ import { withAccelerate } from "@prisma/extension-accelerate";
 
 const prisma = new PrismaClient().$extends(withAccelerate());
 
+export async function saveState(state: string) {
+	const oauth_state = await prisma.oauthState.create({
+		data: {
+			state: state,
+		},
+	});
+
+	console.log(oauth_state);
+}
+
 export async function addSheetToDb(sheet_id: string) {
 	const deleteExistingSheet = await prisma.sheet.deleteMany({});
 

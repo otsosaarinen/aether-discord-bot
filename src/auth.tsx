@@ -107,11 +107,11 @@ function Auth() {
 
 	return (
 		<>
-			<div className="font-poppins flex h-screen flex-col items-center justify-center gap-10 bg-neutral-900">
+			<div className="font-poppins flex h-screen flex-col items-center justify-center gap-10 bg-neutral-900 text-white">
 				<div className="flex flex-col items-center justify-center">
-					<h2 className="text-6xl font-semibold text-white italic underline decoration-[#4981ff] decoration-3 underline-offset-5">
-						5 Digit Suomi Turnaus 3
-					</h2>
+					<h1 className="text-8xl font-bold text-[#4981ff] italic">
+						5<span className="text-white">DST</span>3
+					</h1>
 				</div>
 				<div className="flex flex-row items-start justify-center gap-20 text-xl text-white">
 					<div className="flex flex-col items-center justify-center gap-3">

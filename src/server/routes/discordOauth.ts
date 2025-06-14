@@ -1,7 +1,7 @@
 import { Router } from "express";
 import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
-import { addDiscordDataToDb } from "../../db/queries";
+import { addDiscordDataToDb, updateDiscordOauthStatus } from "../../db/queries";
 
 dotenv.config();
 
@@ -73,6 +73,8 @@ router.post("/", async (req, res) => {
 			};
 
 			await addDiscordDataToDb(userObject);
+
+			await updateDiscordOauthStatus(verifyJwt.id, true);
 
 			res.status(200).json(profileData);
 			return;

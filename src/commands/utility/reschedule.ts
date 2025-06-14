@@ -4,8 +4,8 @@ import {
 	MessageReaction,
 	User,
 } from "discord.js";
-import { authorize, reschedule, connectSheet } from "../../google/googleAPI.js";
-import { SHEET_DATA } from "../../memory.js";
+import { authorize, fetchMatches, reschedule } from "../../google/googleAPI.js";
+import { fetchSheetId } from "../../db/queries.js";
 
 export const data = new SlashCommandBuilder()
 	.setName("reschedule")
@@ -28,23 +28,11 @@ export async function execute(interaction: ChatInputCommandInteraction) {
 	const time = interaction.options.getString("time", true);
 
 	try {
-		if (
-			SHEET_DATA["sheet_id"].length < 1 ||
-			SHEET_DATA["tab_name"].length < 0
-		) {
-			interaction.reply(
-				"sheet_id or tab_name missing, contact @aetherian",
-			);
-			return;
-		}
-
 		const auth = await authorize();
 
-		const sheetData = await connectSheet(
-			auth,
-			SHEET_DATA["sheet_id"],
-			SHEET_DATA["tab_name"],
-		);
+		const sheet_id = await fetchSheetId();
+
+		const sheetData = await fetchMatches(auth, sheet_id, "Taulukko1!A1:I");
 
 		if (sheetData.data.values.length == 0) {
 			await interaction.reply("No data found, contact @aetherian");
@@ -117,7 +105,6 @@ export async function execute(interaction: ChatInputCommandInteraction) {
 				});
 
 				collector.on("collect", async (reaction, user) => {
-					console.log(user.username);
 					if (reaction.emoji.name === "✅") {
 						await message.reply(
 							`${user.username} approved the reschedule ✅`,
@@ -127,13 +114,7 @@ export async function execute(interaction: ChatInputCommandInteraction) {
 
 						const data = [date, time];
 
-						await reschedule(
-							auth,
-							SHEET_DATA["sheet_id"],
-							SHEET_DATA["tab_name"],
-							range,
-							data,
-						);
+						await reschedule(auth, sheet_id, range, data);
 
 						await interaction.followUp(
 							`Match **ID ${match_id}** succesfully rescheduled, new time is **${date} ${time}**`,

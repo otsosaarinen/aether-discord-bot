@@ -54,13 +54,12 @@ export async function authorize(): Promise<OAuth2Client> {
 export async function connectSheet(
 	auth: OAuth2Client,
 	sheet_id: string,
-	range: string,
 ): Promise<any> {
 	const sheets = google.sheets({ version: "v4", auth });
 
 	const res = await sheets.spreadsheets.values.get({
 		spreadsheetId: sheet_id,
-		range: range,
+		range: "A1:A1",
 	});
 
 	return res;

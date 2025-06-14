@@ -55,7 +55,7 @@ export async function fetchSheetId() {
 
 	if (!sheet_id) {
 		console.log("No sheet ID found from the database");
-		return;
+		throw new Error("No sheet ID found from the database");
 	}
 
 	console.log("Sheet ID found: ", sheet_id?.sheet_id);
@@ -117,7 +117,7 @@ export async function fetchOauthStatus(osu_id: number) {
 
 	if (!status) {
 		console.log("No oauth status found from the db");
-		return;
+		throw new Error("No oauth status found from the db");
 	}
 
 	console.log(status);

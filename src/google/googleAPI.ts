@@ -65,10 +65,24 @@ export async function connectSheet(
 	return res;
 }
 
+export async function fetchMatches(
+	auth: OAuth2Client,
+	sheet_id: string,
+	range: string,
+): Promise<any> {
+	const sheets = google.sheets({ version: "v4", auth });
+
+	const res = await sheets.spreadsheets.values.get({
+		spreadsheetId: sheet_id,
+		range: range,
+	});
+
+	return res;
+}
+
 export async function reschedule(
 	auth: OAuth2Client,
 	sheet_id: string,
-	tab_name: string,
 	range: string,
 	rowData: (string | null)[],
 ): Promise<any> {
@@ -78,7 +92,7 @@ export async function reschedule(
 
 	const res = await sheets.spreadsheets.values.update({
 		spreadsheetId: sheet_id,
-		range: `${tab_name}!${range}`,
+		range: range,
 		valueInputOption: "RAW",
 		requestBody: { values },
 	});

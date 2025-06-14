@@ -14,7 +14,7 @@ datasource db {
 }
 
 model Sheet {
-  sheet_id Int @id
+  sheet_id String @id
 }
 
 model Player {

@@ -86,6 +86,7 @@ function Auth() {
 
 				const accessTokenExchange = await fetch(authEndpoint, {
 					method: "POST",
+					credentials: "include",
 					headers: {
 						Accept: "application/json",
 						"Content-Type": "application/json",

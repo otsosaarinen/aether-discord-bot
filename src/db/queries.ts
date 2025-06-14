@@ -91,7 +91,7 @@ export async function addDiscordDataToDb({
 	discord_username,
 }: {
 	osu_id: number;
-	discord_id: number;
+	discord_id: string;
 	discord_username: string;
 }) {
 	const discordData = await prisma.player.update({

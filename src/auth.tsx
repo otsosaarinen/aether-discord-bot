@@ -46,32 +46,30 @@ function Auth() {
 		}
 	};
 
-	useEffect(() => {
-		const fetchProgress = async () => {
-			try {
-				const response = await fetch(
-					"http://localhost:3001/oauth/status",
-					{
-						method: "GET",
-						credentials: "include",
-					},
-				);
+	const fetchProgress = async () => {
+		try {
+			const response = await fetch("http://localhost:3001/oauth/status", {
+				method: "GET",
+				credentials: "include",
+			});
 
-				if (response.ok) {
-					const data = await response.json();
-					setOsuOauthStatus(data.osuOauthDone);
-					setDiscordOauthStatus(data.discordOauthDone);
-					return;
-				} else {
-					console.log("Couldn't fetch oauth status");
-				}
-			} catch (error) {
-				console.log("Error while fetching oauth status: ", error);
+			if (response.ok) {
+				const data = await response.json();
+				setOsuOauthStatus(data.osuOauthDone);
+				setDiscordOauthStatus(data.discordOauthDone);
+				return;
+			} else {
+				console.log("Couldn't fetch oauth status");
 			}
-		};
+		} catch (error) {
+			console.log("Error while fetching oauth status: ", error);
+		}
+	};
 
+	// run fetchProgress on initial page load
+	useEffect(() => {
 		fetchProgress();
-	}, [osuOauthStatus, discordOauthStatus]);
+	}, []);
 
 	// when page loads check if url has code and state parameters, exit function if they dont exist
 	useEffect(() => {
@@ -128,10 +126,9 @@ function Auth() {
 					body: JSON.stringify({ code }),
 				});
 
-				if (accessTokenExchange.ok && provider === "osu") {
-					console.log("osu success");
-				} else if (accessTokenExchange.ok && provider === "discord") {
-					console.log("discord success");
+				// run fetchProgress after succesfully exchange access token to update button visibility
+				if (accessTokenExchange.ok) {
+					await fetchProgress();
 				}
 			} catch (error) {
 				console.log(error);

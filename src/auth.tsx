@@ -137,6 +137,12 @@ function Auth() {
 		getAccessToken(code, state);
 	}, []);
 
+	const steps = [
+		"Yhdistä osu! käyttäjäsi",
+		"Yhdistä Discord käyttäjäsi",
+		"Valmista",
+	];
+
 	return (
 		<>
 			<div className="font-poppins flex h-screen flex-col justify-between bg-neutral-900 text-white">
@@ -179,6 +185,17 @@ function Auth() {
 								Yhdistä
 							</Button>
 						</div>
+					</div>
+					<div>
+						<Stepper activeStep={0} alternativeLabel>
+							{steps.map((label) => (
+								<Step key={label}>
+									<StepLabel>
+										<p className="text-white">{label}</p>
+									</StepLabel>
+								</Step>
+							))}
+						</Stepper>
 					</div>
 				</div>
 				<div className="flex h-14 w-full items-center justify-center bg-[#4981ff]">

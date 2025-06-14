@@ -108,11 +108,15 @@ export async function addDiscordDataToDb({
 }
 
 export async function fetchOauthStatus(osu_id: number) {
-	const status = await prisma.player.findUnique({
+	const status = await prisma.player.findFirst({
 		where: {
 			osu_id: osu_id,
 		},
 	});
+
+	if (!status) {
+		throw new Error("No oauth status found from the db");
+	}
 
 	console.log(status);
 	return status;

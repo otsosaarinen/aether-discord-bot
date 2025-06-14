@@ -25,11 +25,15 @@ function Auth() {
 	const OauthStart = async (provider: "osu" | "discord") => {
 		const state = generateState();
 
-		await fetch("http://localhost:3001/oauth/state", {
-			method: "POST",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({ state, provider }),
-		});
+		try {
+			await fetch("http://localhost:3001/oauth/state", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ state, provider }),
+			});
+		} catch (error) {
+			console.log("Something went wrong");
+		}
 
 		if (provider == "osu") {
 			window.location.href = `https://osu.ppy.sh/oauth/authorize?client_id=${OSU_CLIENT_ID}&redirect_uri=${OSU_REDIRECT_URI}&response_type=code&state=${state}`;

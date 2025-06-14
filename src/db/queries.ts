@@ -106,3 +106,14 @@ export async function addDiscordDataToDb({
 
 	console.log(discordData);
 }
+
+export async function fetchOauthStatus(osu_id: number) {
+	const status = await prisma.player.findUnique({
+		where: {
+			osu_id: osu_id,
+		},
+	});
+
+	console.log(status);
+	return status;
+}

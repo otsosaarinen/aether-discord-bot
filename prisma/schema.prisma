@@ -27,15 +27,10 @@ model Player {
   createdAt DateTime @default(now())
 }
 
-enum Provider {
-  discord
-  osu
-}
-
 model OauthState {
   id        String   @id @default(uuid())
   state     String   @unique
-  provider Provider
+  provider String
   createdAt DateTime @default(now())
   used      Boolean  @default(false)
 }

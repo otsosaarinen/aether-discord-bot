@@ -11,7 +11,7 @@ export async function saveState(state: string, provider: string) {
 		},
 	});
 
-	console.log("Saved state to db: ", oauth_state);
+	return oauth_state;
 }
 
 export async function fetchState(clientState: string) {
@@ -32,33 +32,27 @@ export async function fetchState(clientState: string) {
 		},
 	});
 
-	console.log("State after using: ", editToUsed);
-
 	return editToUsed;
 }
 
 export async function addSheetToDb(sheet_id: string) {
 	const deleteExistingSheet = await prisma.sheet.deleteMany({});
 
-	console.log("Deleted sheet: ", deleteExistingSheet);
-
 	const sheet = await prisma.sheet.create({
 		data: {
 			sheet_id: sheet_id,
 		},
 	});
-	console.log("New sheet added: ", sheet);
+
+	return sheet;
 }
 
 export async function fetchSheetId() {
 	const sheet_id = await prisma.sheet.findFirst();
 
 	if (!sheet_id) {
-		console.log("No sheet ID found from the database");
 		throw new Error("No sheet ID found from the database");
 	}
-
-	console.log("Sheet ID found: ", sheet_id?.sheet_id);
 
 	return sheet_id?.sheet_id;
 }
@@ -82,8 +76,7 @@ export async function addOsuDataToDb({
 			country: country,
 		},
 	});
-
-	console.log("Player added to db: ", osuData);
+	return osuData;
 }
 
 export async function addDiscordDataToDb({
@@ -105,7 +98,7 @@ export async function addDiscordDataToDb({
 		},
 	});
 
-	console.log(discordData);
+	return discordData;
 }
 
 export async function fetchOauthStatus(osu_id: number) {
@@ -116,11 +109,9 @@ export async function fetchOauthStatus(osu_id: number) {
 	});
 
 	if (!status) {
-		console.log("No oauth status found from the db");
 		throw new Error("No oauth status found from the db");
 	}
 
-	console.log(status);
 	return status;
 }
 
@@ -136,7 +127,7 @@ export async function updateOsuOauthStatus(
 			osuOauthDone: newOauthStatus,
 		},
 	});
-	console.log(status);
+	return status;
 }
 
 export async function updateDiscordOauthStatus(
@@ -151,5 +142,5 @@ export async function updateDiscordOauthStatus(
 			discordOauthDone: newOauthStatus,
 		},
 	});
-	console.log(status);
+	return status;
 }

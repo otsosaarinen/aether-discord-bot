@@ -1,9 +1,13 @@
 import "./App.css";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import Button from "@mui/material/Button";
 
 function Auth() {
+	const [osuOauthStatus, setOsuOauthStatus] = useState<boolean>(false);
+	const [discordOauthStatus, setDiscordOauthStatus] =
+		useState<boolean>(false);
+
 	// initialize environment variables
 	const OSU_CLIENT_ID = import.meta.env.VITE_OSU_CLIENT_ID as string;
 	const OSU_REDIRECT_URI = import.meta.env.VITE_OSU_REDIRECT_URI as string;
@@ -126,6 +130,7 @@ function Auth() {
 
 							<Button
 								variant="contained"
+								disabled={osuOauthStatus}
 								onClick={() => OauthStart("osu")}
 							>
 								Yhdistä
@@ -141,6 +146,7 @@ function Auth() {
 
 							<Button
 								variant="contained"
+								disabled={discordOauthStatus}
 								onClick={() => OauthStart("discord")}
 							>
 								Yhdistä

@@ -1,5 +1,6 @@
 import { Router } from "express";
 import dotenv from "dotenv";
+import jwt from "jsonwebtoken";
 import { addOsuDataToDb } from "../../db/queries";
 
 dotenv.config();
@@ -12,6 +13,7 @@ router.post("/", async (req, res) => {
 	const CLIENT_ID = process.env.VITE_OSU_CLIENT_ID as string;
 	const CLIENT_SECRET = process.env.VITE_OSU_CLIENT_SECRET as string;
 	const REDIRECT_URI = process.env.VITE_OSU_REDIRECT_URI as string;
+	const JWT_SECRET = process.env.JWT_SECRET as string;
 
 	if (!CLIENT_ID || !CLIENT_SECRET || !REDIRECT_URI) {
 		res.status(500).json({ error: "Missing environment variables" });
@@ -54,14 +56,28 @@ router.post("/", async (req, res) => {
 
 			const profileData = await osuProfileData.json();
 
-			await addOsuDataToDb(
-				profileData.id,
-				profileData.username,
-				profileData.statistics_rulesets.osu.global_rank,
-				profileData.country_code,
-			);
+			const userObject = {
+				osu_id: profileData.id,
+				osu_username: profileData.username,
+				rank: profileData.statistics_rulesets.osu.global_rank,
+				country: profileData.country_code,
+			};
 
-			res.status(200).json(profileData);
+			await addOsuDataToDb(userObject);
+
+			const payload = { id: profileData.id };
+
+			const token = jwt.sign(payload, JWT_SECRET, {
+				expiresIn: "15m",
+			});
+
+			res.cookie("token", token, {
+				maxAge: 15 * 60 * 1000,
+				sameSite: "strict",
+				httpOnly: true,
+			})
+				.status(200)
+				.json(userObject);
 			return;
 		} else {
 			res.status(400).json({ error: "Token exchange failed" });

@@ -9,7 +9,7 @@
 		"lint": "eslint .",
 		"preview": "vite preview",
 		"deploy_commands": "npx tsx src/deploy-commands.ts",
-		"bot": "npx tsx src/index.ts",
+		"bot": "npx nodemon --watch src --exec \"tsx\" src/index.ts",
 		"server": "npx tsx src/server/index.ts"
 	},
 	"dependencies": {

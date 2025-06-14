@@ -51,7 +51,7 @@ export async function fetchSheetId() {
 	const sheet_id = await prisma.sheet.findFirst();
 
 	if (!sheet_id) {
-		throw new Error("No sheet ID found from the database");
+		return "No sheet ID found from the database";
 	}
 
 	return sheet_id?.sheet_id;
@@ -109,7 +109,7 @@ export async function fetchOauthStatus(osu_id: number) {
 	});
 
 	if (!status) {
-		throw new Error("No oauth status found from the db");
+		return "No oauth status found from the db";
 	}
 
 	return status;

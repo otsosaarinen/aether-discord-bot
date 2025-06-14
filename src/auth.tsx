@@ -61,9 +61,12 @@ function Auth() {
 					const data = await response.json();
 					setOsuOauthStatus(data.osuOauthDone);
 					setDiscordOauthStatus(data.discordOauthDone);
+					return;
+				} else {
+					console.log("Couldn't fetch oauth status");
 				}
 			} catch (error) {
-				console.log("Error while fetching status: ", error);
+				console.log("Error while fetching oauth status: ", error);
 			}
 		};
 

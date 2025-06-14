@@ -121,3 +121,31 @@ export async function fetchOauthStatus(osu_id: number) {
 	console.log(status);
 	return status;
 }
+
+export async function updateOsuOauthStatus(
+	osu_id: number,
+	newOauthStatus: boolean,
+) {
+	const status = await prisma.player.update({
+		where: {
+			osu_id: osu_id,
+		},
+		data: {
+			osuOauthDone: newOauthStatus,
+		},
+	});
+}
+
+export async function updateDiscordOauthStatus(
+	osu_id: number,
+	newOauthStatus: boolean,
+) {
+	const status = await prisma.player.update({
+		where: {
+			osu_id: osu_id,
+		},
+		data: {
+			discordOauthDone: newOauthStatus,
+		},
+	});
+}

@@ -147,9 +147,6 @@ function Auth() {
 						<p>osu username: {osuUsername}</p>
 					</div>
 				</div>
-				<div className="border-2 border-neutral-600 px-3 py-1 font-medium text-green-500 hover:cursor-pointer">
-					Continue
-				</div>
 			</div>
 		</>
 	);

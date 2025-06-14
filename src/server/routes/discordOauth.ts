@@ -35,30 +35,29 @@ router.post("/", async (req, res) => {
 			body,
 		});
 
-		if (!response.ok) {
-			const error = await response.text();
-			console.error("Token error:", error);
+		if (response.ok) {
+			const data = await response.json();
+			const access_token = data.access_token;
+
+			const discordProfileData = await fetch(
+				"https://discord.com/api/oauth2/@me",
+				{
+					method: "GET",
+					headers: {
+						Accept: "application/json",
+						"Content-Type": "application/x-www-form-urlencoded",
+						Authorization: `Bearer ${access_token}`,
+					},
+				},
+			);
+
+			const profileData = await discordProfileData.json();
+			res.status(200).json(profileData);
+			return;
+		} else {
 			res.status(400).json({ error: "Token exchange failed" });
 			return;
 		}
-
-		const data = await response.json();
-		const access_token = data.access_token;
-
-		const discordProfileData = await fetch(
-			"https://discord.com/api/oauth2/@me",
-			{
-				method: "GET",
-				headers: {
-					Accept: "application/json",
-					"Content-Type": "application/x-www-form-urlencoded",
-					Authorization: `Bearer ${access_token}`,
-				},
-			},
-		);
-
-		const profileData = await discordProfileData.json();
-		res.status(200).json(profileData);
 	} catch (error) {
 		console.log(error);
 		res.status(500).json({ error: "Internal server error" });

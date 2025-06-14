@@ -55,7 +55,8 @@ router.post("/", async (req, res) => {
 			res.status(200).json(profileData);
 			return;
 		} else {
-			res.status(400).json({ message: "Something went wrong" });
+			res.status(400).json({ error: "Token exchange failed" });
+			return;
 		}
 	} catch (error) {
 		console.log(error);

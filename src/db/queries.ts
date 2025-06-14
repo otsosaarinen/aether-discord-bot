@@ -16,9 +16,16 @@ export async function addSheetToDb(sheet_id: string) {
 	console.log("New sheet added: ", sheet);
 }
 
-export async function listAllPlayers() {
-	const user = await prisma.player.findMany();
-	console.log(user);
+export async function fetchSheetId(): Promise<string> {
+	const sheet_id = await prisma.sheet.findFirst();
+
+	if (!sheet_id) {
+		throw new Error("No sheet ID found from the database");
+	}
+
+	console.log("Sheet ID found: ", sheet_id?.sheet_id);
+
+	return sheet_id?.sheet_id;
 }
 
 export async function createPlayer(

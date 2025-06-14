@@ -50,11 +50,12 @@ export async function addSheetToDb(sheet_id: string) {
 	console.log("New sheet added: ", sheet);
 }
 
-export async function fetchSheetId(): Promise<string> {
+export async function fetchSheetId() {
 	const sheet_id = await prisma.sheet.findFirst();
 
 	if (!sheet_id) {
-		throw new Error("No sheet ID found from the database");
+		console.log("No sheet ID found from the database");
+		return;
 	}
 
 	console.log("Sheet ID found: ", sheet_id?.sheet_id);
@@ -115,7 +116,8 @@ export async function fetchOauthStatus(osu_id: number) {
 	});
 
 	if (!status) {
-		throw new Error("No oauth status found from the db");
+		console.log("No oauth status found from the db");
+		return;
 	}
 
 	console.log(status);

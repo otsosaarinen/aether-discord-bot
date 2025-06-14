@@ -94,9 +94,6 @@ function Auth() {
 					body: JSON.stringify({ code }),
 				});
 
-				// save data to userData variable and hydrate page based on provider value
-				const userData = await accessTokenExchange.json();
-
 				if (accessTokenExchange.ok && provider === "osu") {
 					console.log("osu success");
 				} else if (accessTokenExchange.ok && provider === "discord") {

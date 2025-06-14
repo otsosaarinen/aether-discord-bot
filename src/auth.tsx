@@ -2,6 +2,9 @@ import "./App.css";
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import Button from "@mui/material/Button";
+import Stepper from "@mui/material/Stepper";
+import Step from "@mui/material/Step";
+import StepLabel from "@mui/material/StepLabel";
 
 function Auth() {
 	const [osuOauthStatus, setOsuOauthStatus] = useState<boolean>(false);
@@ -42,6 +45,30 @@ function Auth() {
 			window.location.href = `https://discord.com/oauth2/authorize?client_id=${DISCORD_CLIENT_ID}&scope=identify&prompt=none&redirect_uri=${DISCORD_REDIRECT_URI}&response_type=code&state=${state}`;
 		}
 	};
+
+	useEffect(() => {
+		const fetchProgress = async () => {
+			try {
+				const response = await fetch(
+					"http://localhost:3001/oauth/status",
+					{
+						method: "GET",
+						credentials: "include",
+					},
+				);
+
+				if (response.ok) {
+					const data = await response.json();
+					setOsuOauthStatus(data.osuOauthDone);
+					setDiscordOauthStatus(data.discordOauthDone);
+				}
+			} catch (error) {
+				console.log("Error while fetching status: ", error);
+			}
+		};
+
+		fetchProgress();
+	}, [osuOauthStatus, discordOauthStatus]);
 
 	// when page loads check if url has code and state parameters, exit function if they dont exist
 	useEffect(() => {

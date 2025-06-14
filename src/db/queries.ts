@@ -84,3 +84,25 @@ export async function addOsuDataToDb({
 
 	console.log("Player added to db: ", osuData);
 }
+
+export async function addDiscordDataToDb({
+	osu_id,
+	discord_id,
+	discord_username,
+}: {
+	osu_id: number;
+	discord_id: number;
+	discord_username: string;
+}) {
+	const discordData = await prisma.player.update({
+		where: {
+			osu_id: osu_id,
+		},
+		data: {
+			discord_id: discord_id,
+			discord_username: discord_username,
+		},
+	});
+
+	console.log(discordData);
+}

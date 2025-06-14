@@ -55,4 +55,8 @@ router.post("/provider", async (req, res) => {
 	}
 });
 
+router.post("/status", async (req, res) => {
+	res.status(200).send();
+});
+
 export default router;

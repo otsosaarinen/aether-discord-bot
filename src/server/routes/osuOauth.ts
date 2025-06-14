@@ -1,7 +1,7 @@
 import { Router } from "express";
 import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
-import { addOsuDataToDb } from "../../db/queries";
+import { addOsuDataToDb, updateOsuOauthStatus } from "../../db/queries";
 
 dotenv.config();
 
@@ -64,6 +64,8 @@ router.post("/", async (req, res) => {
 			};
 
 			await addOsuDataToDb(userObject);
+
+			await updateOsuOauthStatus(profileData.id, true);
 
 			const payload = { id: profileData.id };
 

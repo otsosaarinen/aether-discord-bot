@@ -19,7 +19,7 @@ function Auth() {
 	const DISCORD_REDIRECT_URI = import.meta.env
 		.VITE_DISCORD_REDIRECT_URI as string;
 
-	// generates random UUID and attaches it to state variable with provider
+	// generates random UUID
 	const generateState = (): string => {
 		const randomUUID: string = crypto.randomUUID();
 		return randomUUID;

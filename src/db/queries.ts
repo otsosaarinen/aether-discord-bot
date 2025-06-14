@@ -3,14 +3,38 @@ import { withAccelerate } from "@prisma/extension-accelerate";
 
 const prisma = new PrismaClient().$extends(withAccelerate());
 
-export async function saveState(state: string) {
+export async function saveState(state: string, provider: string) {
 	const oauth_state = await prisma.oauthState.create({
 		data: {
 			state: state,
+			provider: provider,
 		},
 	});
 
-	console.log(oauth_state);
+	console.log("Saved state to db: ", oauth_state);
+}
+
+export async function fetchState(clientState: string) {
+	const stateMatch = await prisma.oauthState.findFirst({
+		where: { state: clientState, used: false },
+	});
+
+	if (!stateMatch) {
+		throw new Error("State not found from db");
+	}
+
+	const editToUsed = await prisma.oauthState.update({
+		where: {
+			state: stateMatch.state,
+		},
+		data: {
+			used: true,
+		},
+	});
+
+	console.log("State after using: ", editToUsed);
+
+	return editToUsed;
 }
 
 export async function addSheetToDb(sheet_id: string) {

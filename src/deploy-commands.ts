@@ -7,9 +7,9 @@ import dotenv from "dotenv";
 // initialize .env variables
 dotenv.config();
 
-const DISCORD_TOKEN = process.env.TOKEN as string;
-const CLIENT_ID = process.env.CLIENT_ID as string;
-const GUILD_ID = process.env.GUILD_ID as string;
+const DISCORD_TOKEN = process.env.DISCORD_TOKEN as string;
+const CLIENT_ID = process.env.VITE_DISCORD_CLIENT_ID as string;
+const GUILD_ID = process.env.DISCORD_GUILD_ID as string;
 
 const commands = [];
 

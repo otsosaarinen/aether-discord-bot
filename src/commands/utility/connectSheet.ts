@@ -1,10 +1,10 @@
 import { SlashCommandBuilder, ChatInputCommandInteraction } from "discord.js";
 import { authorize, connectSheet } from "../../google/googleAPI.js";
-import { SHEET_DATA } from "../../memory.js";
+import { addSheetDb } from "../../db/queries.js";
 
 export const data = new SlashCommandBuilder()
-	.setName("connect")
-	.setDescription("Connect the bot to a sheet")
+	.setName("connect_sheet")
+	.setDescription("Connect the bot to a google sheet")
 	.addStringOption((option) =>
 		option
 			.setName("sheet_id")
@@ -13,30 +13,25 @@ export const data = new SlashCommandBuilder()
 	)
 	.addStringOption((option) =>
 		option
-			.setName("tab_name")
-			.setDescription("Name of the sheet tab you want to connect to")
+			.setName("range")
+			.setDescription(
+				"Range the bot is going to use e.g. 'Taulukko1:A1:Z'",
+			)
 			.setRequired(true),
 	);
 
 export async function execute(interaction: ChatInputCommandInteraction) {
 	const sheet_id = interaction.options.getString("sheet_id", true);
-	const tab_name = interaction.options.getString("tab_name", true);
+	const range = interaction.options.getString("range", true);
 
 	try {
-		if (SHEET_DATA["whitelist"].includes(interaction.user.username)) {
-			const auth = await authorize();
+		const auth = await authorize();
 
-			await connectSheet(auth, sheet_id, tab_name);
+		await connectSheet(auth, sheet_id, range);
 
-			SHEET_DATA["sheet_id"] = sheet_id;
-			SHEET_DATA["tab_name"] = tab_name;
+		await addSheetDb(sheet_id);
 
-			await interaction.reply("Succesfully connected!");
-		} else {
-			await interaction.reply(
-				"You are not whitelisted to use this command",
-			);
-		}
+		await interaction.reply("Succesfully connected!");
 	} catch (error) {
 		console.log(error);
 		await interaction.reply("Error occured while connecting to a sheet");

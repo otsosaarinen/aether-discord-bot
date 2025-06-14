@@ -20,6 +20,7 @@ router.post("/state", async (req, res) => {
 			createdAt: Date.now(),
 		});
 
+		console.log(`Saved state: ${state}, provider: ${provider}`);
 		res.status(200).send("State saved");
 	} catch (error) {
 		console.log(error);
@@ -36,6 +37,7 @@ router.post("/provider", async (req, res) => {
 		return;
 	}
 
+	console.log(`Loaded state: ${state}, provider: ${data.provider}`);
 	res.status(200).json({ provider: data.provider });
 });
 

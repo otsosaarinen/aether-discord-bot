@@ -3,7 +3,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import osuOauthRoute from "./routes/osuOauth";
 import discordOauthRoute from "./routes/discordOauth";
-import stateOauthRoute from "./routes/stateOauth";
+import stateOauthRoute from "./routes/oauth";
 
 const app = express();
 const PORT = 3001;

@@ -3,26 +3,43 @@ import { withAccelerate } from "@prisma/extension-accelerate";
 
 const prisma = new PrismaClient().$extends(withAccelerate());
 
+export async function addSheetToDb(sheet_id: string) {
+	const deleteExistingSheet = await prisma.sheet.deleteMany({});
+
+	console.log("Deleted sheet: ", deleteExistingSheet);
+
+	const sheet = await prisma.sheet.create({
+		data: {
+			sheet_id: sheet_id,
+		},
+	});
+	console.log("New sheet added: ", sheet);
+}
+
 export async function listAllPlayers() {
-    const user = await prisma.player.findMany();
-    console.log(user);
+	const user = await prisma.player.findMany();
+	console.log(user);
 }
 
 export async function createPlayer(
-    osu_id: number,
-    osu_username: string,
-    discord_user_id: number,
-    discord_username: string
+	osu_id: number,
+	osu_username: string,
+	discord_user_id: number,
+	discord_username: string,
+	rank: string,
+	country: string,
 ) {
-    const user = await prisma.player.create({
-        data: {
-            osu_id: osu_id,
-            osu_username: osu_username,
-            discord_user_id: discord_user_id,
-            discord_username: discord_username,
-            createdAt: new Date(),
-        },
-    });
+	const user = await prisma.player.create({
+		data: {
+			osu_id: osu_id,
+			osu_username: osu_username,
+			discord_user_id: discord_user_id,
+			discord_username: discord_username,
+			rank: rank,
+			country: country,
+			createdAt: new Date(),
+		},
+	});
 
-    console.log(user);
+	console.log(user);
 }

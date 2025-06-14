@@ -9,9 +9,9 @@ const PORT = 3001;
 
 app.use(cors());
 app.use(express.json());
-app.use("/api/osu", osuOauthRoute);
-app.use("/api/discord", discordOauthRoute);
-app.use("/api/oauth", stateOauthRoute);
+app.use("/oauth/osu", osuOauthRoute);
+app.use("/oauth/discord", discordOauthRoute);
+app.use("/oauth", stateOauthRoute);
 
 app.listen(PORT, () => {
 	console.log(`Server is running on port ${PORT}`);

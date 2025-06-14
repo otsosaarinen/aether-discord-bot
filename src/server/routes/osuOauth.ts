@@ -5,7 +5,7 @@ dotenv.config();
 
 const router = Router();
 
-router.post("/auth", async (req, res) => {
+router.post("/", async (req, res) => {
 	const code = req.body.code;
 
 	const CLIENT_ID = process.env.VITE_OSU_CLIENT_ID as string;

@@ -22,7 +22,7 @@ function Auth() {
 
 	const OauthStart = async (provider: "osu" | "discord") => {
 		const state = generateState(provider);
-		await fetch("http://localhost:3001/api/oauth/state", {
+		await fetch("http://localhost:3001/oauth/state", {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({ state, provider }),
@@ -54,7 +54,7 @@ function Auth() {
 		const getAccessToken = async (code: string, state: string) => {
 			try {
 				const fetchProvider = await fetch(
-					"http://localhost:3001/api/oauth/provider",
+					"http://localhost:3001/oauth/provider",
 					{
 						method: "POST",
 						headers: {
@@ -71,9 +71,9 @@ function Auth() {
 
 				let authEndpoint = "";
 				if (provider === "osu") {
-					authEndpoint = "http://localhost:3001/api/osu/auth";
+					authEndpoint = "http://localhost:3001/oauth/osu";
 				} else if (provider === "discord") {
-					authEndpoint = "http://localhost:3001/api/discord/auth";
+					authEndpoint = "http://localhost:3001/oauth/discord";
 				}
 
 				const tokenRes = await fetch(authEndpoint, {

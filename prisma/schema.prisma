@@ -24,5 +24,12 @@ model Player {
   discord_username String
   rank String
   country String
-  createdAt DateTime
+  createdAt DateTime @default(now())
+}
+
+model OauthState {
+  id        String   @id @default(uuid())
+  state     String   @unique
+  createdAt DateTime @default(now())
+  used      Boolean  @default(false)
 }

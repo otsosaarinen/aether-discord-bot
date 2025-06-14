@@ -44,7 +44,6 @@ export async function createPlayer(
 			discord_username: discord_username,
 			rank: rank,
 			country: country,
-			createdAt: new Date(),
 		},
 	});
 

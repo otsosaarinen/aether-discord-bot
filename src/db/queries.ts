@@ -77,5 +77,5 @@ export async function addOsuDataToDb(
 		},
 	});
 
-	console.log(osuData);
+	console.log("Player added to db: ", osuData);
 }

@@ -134,6 +134,7 @@ export async function updateOsuOauthStatus(
 			osuOauthDone: newOauthStatus,
 		},
 	});
+	console.log(status);
 }
 
 export async function updateDiscordOauthStatus(
@@ -148,4 +149,5 @@ export async function updateDiscordOauthStatus(
 			discordOauthDone: newOauthStatus,
 		},
 	});
+	console.log(status);
 }

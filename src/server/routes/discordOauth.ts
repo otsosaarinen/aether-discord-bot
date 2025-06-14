@@ -24,7 +24,6 @@ router.post("/", async (req, res) => {
 
 	try {
 		verifyJwt = jwt.verify(req.cookies.token, JWT_SECRET);
-		console.log("JWT decoded succesfully: ", verifyJwt);
 	} catch (error) {
 		console.log(error);
 		res.status(400).send("Problem with JWT");

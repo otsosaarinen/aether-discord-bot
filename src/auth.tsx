@@ -2,6 +2,7 @@ import "./App.css";
 import { useState, useEffect } from "react";
 
 function Auth() {
+	// initialize environment variables
 	const OSU_CLIENT_ID = import.meta.env.VITE_OSU_CLIENT_ID as string;
 	const OSU_REDIRECT_URI = import.meta.env.VITE_OSU_REDIRECT_URI as string;
 
@@ -14,14 +15,15 @@ function Auth() {
 	const [discordUsername, setdiscordUsername] = useState<string>("");
 	const [discordId, setdiscordId] = useState<number>();
 
-	const generateState = (provider: "osu" | "discord"): string => {
+	// generates random UUID and attaches it to state variable with provider
+	const generateState = (): string => {
 		const randomUUID: string = crypto.randomUUID();
-		const state: string = provider + ":" + randomUUID;
-		return state;
+		return randomUUID;
 	};
 
+	// generates state and sends it to to backend for saving, redirects user to either osu/discord oauth page based on the provider value
 	const OauthStart = async (provider: "osu" | "discord") => {
-		const state = generateState(provider);
+		const state = generateState();
 		await fetch("http://localhost:3001/oauth/state", {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
@@ -35,6 +37,7 @@ function Auth() {
 		}
 	};
 
+	// when page loads check if url has code and state parameters and exit function if they dont exist
 	useEffect(() => {
 		const urlParams = new URLSearchParams(window.location.search);
 		const code = urlParams.get("code");
@@ -51,6 +54,7 @@ function Auth() {
 			(urlParams.toString() ? "?" + urlParams.toString() : "");
 		window.history.replaceState(null, "", newUrl);
 
+		// if code and state parameters exist in the url, send request to backend to retrieve the saved state
 		const getAccessToken = async (code: string, state: string) => {
 			try {
 				const fetchProvider = await fetch(

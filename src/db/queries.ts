@@ -36,7 +36,8 @@ export async function fetchState(clientState: string) {
 }
 
 export async function addSheetToDb(sheet_id: string) {
-	const deleteExistingSheet = await prisma.sheet.deleteMany({});
+	// Delete existing sheets
+	await prisma.sheet.deleteMany({});
 
 	const sheet = await prisma.sheet.create({
 		data: {

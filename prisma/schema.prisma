@@ -25,6 +25,8 @@ model Player {
   discord_username String?
   rank Int
   country String
+  osuOauthDone Boolean @default(false)
+  discordOauthDone Boolean @default(false)
   createdAt DateTime @default(now())
 }
 

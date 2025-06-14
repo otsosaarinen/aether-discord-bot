@@ -111,9 +111,9 @@ function Auth() {
 	return (
 		<>
 			<div className="font-poppins flex h-screen flex-col justify-between bg-neutral-900 text-white">
-				<div className="flex flex-col items-center justify-center gap-10 py-30">
+				<div className="flex h-full flex-col items-center justify-center gap-10">
 					<div className="flex flex-col items-center justify-center">
-						<h1 className="text-8xl font-bold text-[#4981ff] italic">
+						<h1 className="text-9xl font-bold text-[#4981ff] italic">
 							5<span className="text-white">DST</span>3
 						</h1>
 					</div>
@@ -150,7 +150,7 @@ function Auth() {
 						</div>
 					</div>
 				</div>
-				<div className="flex h-15 w-full items-center justify-center bg-[#4981ff]">
+				<div className="flex h-14 w-full items-center justify-center bg-[#4981ff]">
 					<p>
 						Site developed by{" "}
 						<Link

@@ -65,6 +65,8 @@ router.post("/", async (req, res) => {
 
 			await addOsuDataToDb(userObject);
 
+			console.log(`OSU: ${profileData.username} added to db`);
+
 			await updateOsuOauthStatus(profileData.id, true);
 
 			const payload = { id: profileData.id };

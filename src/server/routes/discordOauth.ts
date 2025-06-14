@@ -74,6 +74,8 @@ router.post("/", async (req, res) => {
 
 			await addDiscordDataToDb(userObject);
 
+			console.log(`DISCORD: ${profileData.user.username} added to db`);
+
 			await updateDiscordOauthStatus(verifyJwt.id, true);
 
 			res.status(200).json(profileData);

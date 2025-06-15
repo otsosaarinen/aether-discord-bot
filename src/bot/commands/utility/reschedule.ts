@@ -86,10 +86,11 @@ export async function execute(interaction: ChatInputCommandInteraction) {
 		if (match_players) {
 			try {
 				interaction.reply(
-					`@${accepting_player} new suggested time for you by${rescheduling_player} **match ${match_id}** is **${date} ${time}**. React to this message if you accept the reschedule`,
+					`@${accepting_player} ${rescheduling_player} is asking for a reschedule. New suggested time is **match ${match_id}** is **${date} ${time}**. React to this message if you accept the reschedule`,
 				);
 
-				const message = await interaction.fetchReply(); // fetch the message just sent
+				// fetch the message just sent
+				const message = await interaction.fetchReply();
 				await message.react("✅");
 				await message.react("❌");
 

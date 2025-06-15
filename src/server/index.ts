@@ -9,7 +9,7 @@ import stateOauthRoute from "./routes/oauth";
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = Number(process.env.PORT) || 3001;
 
 app.use(
 	cors({
@@ -28,10 +28,12 @@ app.use("/oauth/osu", osuOauthRoute);
 app.use("/oauth/discord", discordOauthRoute);
 app.use("/oauth", stateOauthRoute);
 
-app.get("/", () => {
+app.get("/", (_, res) => {
 	console.log("API is online");
+	res.send(200).json({ message: "API is online" });
+	return;
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, "0.0.0.0", () => {
 	console.log(`Server is running on port ${PORT}`);
 });

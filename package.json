@@ -10,7 +10,11 @@
 		"preview": "vite preview",
 		"deploy_commands": "npx tsx src/bot/deploy-commands.ts",
 		"bot": "npx nodemon --watch src --exec \"tsx\" src/bot/index.ts",
-		"server": "npx tsx src/server/index.ts"
+		"server": "npx tsx src/server/index.ts",
+		"web:start": "vite",
+		"server:start": "npx tsx src/server/index.ts",
+		"bot:start": "npx tsx src/bot/index.ts",
+		"production": "concurrently \"npm run web:start\" \"npm run server:start\" \"npm run bot:start\""
 	},
 	"dependencies": {
 		"@emotion/react": "^11.14.0",
@@ -46,6 +50,7 @@
 		"@types/react": "^19.1.2",
 		"@types/react-dom": "^19.1.2",
 		"@vitejs/plugin-react": "^4.4.1",
+		"concurrently": "^9.1.2",
 		"eslint": "^9.25.0",
 		"eslint-plugin-react-hooks": "^5.2.0",
 		"eslint-plugin-react-refresh": "^0.4.19",

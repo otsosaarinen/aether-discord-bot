@@ -6,6 +6,9 @@ import osuOauthRoute from "./routes/osuOauth";
 import discordOauthRoute from "./routes/discordOauth";
 import stateOauthRoute from "./routes/oauth";
 
+import path from "path";
+import { fileURLToPath } from "url";
+
 dotenv.config();
 
 const app = express();
@@ -22,16 +25,24 @@ app.use(
 		credentials: true,
 	}),
 );
+
 app.use(cookieParser());
 app.use(express.json());
 app.use("/oauth/osu", osuOauthRoute);
 app.use("/oauth/discord", discordOauthRoute);
 app.use("/oauth", stateOauthRoute);
 
-app.get("/", (_, res) => {
-	console.log("API is online");
+// Serve static files
+app.use(express.static(path.join(__dirname, "../../dist")));
+
+// API route
+app.get("/api", (_, res) => {
 	res.status(200).json({ message: "API is online" });
-	return;
+});
+
+// SPA fallback
+app.get("*", (_, res) => {
+	res.sendFile(path.join(__dirname, "../../dist/index.html"));
 });
 
 app.listen(PORT, "0.0.0.0", () => {

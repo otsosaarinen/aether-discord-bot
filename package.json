@@ -4,16 +4,13 @@
 	"version": "0.0.0",
 	"type": "module",
 	"scripts": {
-		"dev": "vite",
 		"build": "tsc -b && vite build",
+		"dev": "vite",
 		"lint": "eslint .",
 		"preview": "vite preview",
 		"deploy_commands": "npx tsx src/bot/deploy-commands.ts",
 		"bot": "npx nodemon --watch src --exec \"tsx\" src/bot/index.ts",
-		"server": "npx tsx src/server/index.ts",
-		"build:app": "tsc --build tsconfig.app.build.json",
-		"build:node": "tsc --build tsconfig.node.build.json",
-		"build_full": "npm run build:app && npm run build:node && vite build"
+		"server": "npx tsx src/server/index.ts"
 	},
 	"dependencies": {
 		"@emotion/react": "^11.14.0",

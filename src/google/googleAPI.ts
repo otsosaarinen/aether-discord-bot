@@ -4,6 +4,7 @@ import { authenticate } from "@google-cloud/local-auth";
 import { google } from "googleapis";
 import { OAuth2Client } from "google-auth-library";
 import { fileURLToPath } from "url";
+import { sheets_v4 } from "googleapis";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -54,7 +55,7 @@ export async function authorize(): Promise<OAuth2Client> {
 export async function connectSheet(
 	auth: OAuth2Client,
 	sheet_id: string,
-): Promise<any> {
+): Promise<sheets_v4.Schema$ValueRange> {
 	const sheets = google.sheets({ version: "v4", auth });
 
 	const res = await sheets.spreadsheets.values.get({
@@ -62,14 +63,14 @@ export async function connectSheet(
 		range: "A1:A1",
 	});
 
-	return res;
+	return res.data;
 }
 
 export async function fetchMatches(
 	auth: OAuth2Client,
 	sheet_id: string,
 	range: string,
-): Promise<any> {
+): Promise<sheets_v4.Schema$ValueRange> {
 	const sheets = google.sheets({ version: "v4", auth });
 
 	const res = await sheets.spreadsheets.values.get({
@@ -77,7 +78,7 @@ export async function fetchMatches(
 		range: range,
 	});
 
-	return res;
+	return res.data;
 }
 
 export async function reschedule(
@@ -85,7 +86,7 @@ export async function reschedule(
 	sheet_id: string,
 	range: string,
 	rowData: (string | null)[],
-): Promise<any> {
+): Promise<sheets_v4.Schema$UpdateValuesResponse> {
 	const sheets = google.sheets({ version: "v4", auth });
 
 	const values = [rowData];
@@ -97,5 +98,5 @@ export async function reschedule(
 		requestBody: { values },
 	});
 
-	return res;
+	return res.data;
 }

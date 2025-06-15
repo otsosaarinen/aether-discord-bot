@@ -18,7 +18,7 @@ const commands = [];
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const foldersPath = path.join(__dirname, "commands");
+const foldersPath = path.join(__dirname, "..", "commands");
 const commandFolders = readdirSync(foldersPath);
 
 for (const folder of commandFolders) {

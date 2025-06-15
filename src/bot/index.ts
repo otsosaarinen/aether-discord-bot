@@ -33,7 +33,7 @@ const client = new ExtendedClient();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const foldersPath = path.join(__dirname, "commands");
+const foldersPath = path.join(__dirname, "..", "commands");
 const commandFolders = readdirSync(foldersPath);
 
 for (const folder of commandFolders) {
@@ -56,7 +56,7 @@ for (const folder of commandFolders) {
 }
 
 // get all the events from the events folder and execute them
-const eventsPath = path.join(__dirname, "events");
+const eventsPath = path.join(__dirname, "..", "events");
 const eventFiles = readdirSync(eventsPath).filter((file) =>
 	file.endsWith(".ts"),
 );

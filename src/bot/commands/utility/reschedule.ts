@@ -4,8 +4,12 @@ import {
 	MessageReaction,
 	User,
 } from "discord.js";
-import { authorize, fetchMatches, reschedule } from "../../google/googleAPI.js";
-import { fetchSheetId } from "../../db/queries.js";
+import {
+	authorize,
+	fetchMatches,
+	reschedule,
+} from "../../../google/googleAPI.js";
+import { fetchSheetId } from "../../../db/queries.js";
 
 export const data = new SlashCommandBuilder()
 	.setName("reschedule")

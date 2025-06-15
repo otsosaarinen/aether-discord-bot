@@ -1,6 +1,6 @@
 import { SlashCommandBuilder, ChatInputCommandInteraction } from "discord.js";
-import { authorize, connectSheet } from "../../google/googleAPI.js";
-import { addSheetToDb } from "../../db/queries.js";
+import { authorize, connectSheet } from "../../../google/googleAPI.js";
+import { addSheetToDb } from "../../../db/queries.js";
 
 export const data = new SlashCommandBuilder()
 	.setName("connect_sheet")

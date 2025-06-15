@@ -34,11 +34,12 @@ export async function execute(interaction: ChatInputCommandInteraction) {
 
 		const sheetData = await fetchMatches(auth, sheet_id, "Taulukko1!A1:I");
 
-		if (sheetData.data.values.length == 0) {
+		if (!sheetData.values || sheetData.values.length == 0) {
 			await interaction.reply("No data found, contact @aetherian");
+			return;
 		}
 
-		const title_column = sheetData.data.values[0];
+		const title_column = sheetData.values[0];
 
 		const date_column = title_column.findIndex(
 			(row: string) => row == "Date",
@@ -53,18 +54,18 @@ export async function execute(interaction: ChatInputCommandInteraction) {
 		let accepting_player = null;
 		let match_players: string[] | null = null;
 
-		for (let i = 1; i < sheetData.data.values.length; i++) {
-			for (let j = 0; j < sheetData.data.values[i].length; j++) {
-				if (interaction.user.username == sheetData.data.values[i][j]) {
+		for (let i = 1; i < sheetData.values.length; i++) {
+			for (let j = 0; j < sheetData.values[i].length; j++) {
+				if (interaction.user.username == sheetData.values[i][j]) {
 					matchRowIndex = i + 1;
-					match_id = sheetData.data.values[i][0];
-					rescheduling_player = sheetData.data.values[i][j];
+					match_id = sheetData.values[i][0];
+					rescheduling_player = sheetData.values[i][j];
 					match_players = [
-						sheetData.data.values[i][4],
-						sheetData.data.values[i][7],
+						sheetData.values[i][4],
+						sheetData.values[i][7],
 					];
 
-					if (match_players[0] == sheetData.data.values[i][j]) {
+					if (match_players[0] == sheetData.values[i][j]) {
 						accepting_player = match_players[1];
 					} else {
 						accepting_player = match_players[0];

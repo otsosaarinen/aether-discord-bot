@@ -30,7 +30,7 @@ app.use("/oauth", stateOauthRoute);
 
 app.get("/", (_, res) => {
 	console.log("API is online");
-	res.send(200).json({ message: "API is online" });
+	res.status(200).json({ message: "API is online" });
 	return;
 });
 

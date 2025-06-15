@@ -72,11 +72,11 @@ router.post("/", async (req, res) => {
 			const payload = { id: profileData.id };
 
 			const token = jwt.sign(payload, JWT_SECRET, {
-				expiresIn: "15m",
+				expiresIn: "1d",
 			});
 
 			res.cookie("token", token, {
-				maxAge: 15 * 60 * 1000,
+				maxAge: 24 * 60 * 60 * 1000,
 				sameSite: "strict",
 				httpOnly: true,
 			})

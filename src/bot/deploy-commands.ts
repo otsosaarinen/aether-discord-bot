@@ -1,15 +1,15 @@
 import { REST, Routes } from "discord.js";
-import type { RESTPostAPIChatInputApplicationCommandsJSONBody } from "discord.js";
-import path from "path";
 import { fileURLToPath, pathToFileURL } from "url";
 import { readdirSync } from "fs";
+import type { RESTPostAPIChatInputApplicationCommandsJSONBody } from "discord.js";
+import path from "path";
 import dotenv from "dotenv";
 
 // initialize .env variables
 dotenv.config();
 
 const DISCORD_TOKEN = process.env.DISCORD_TOKEN as string;
-const CLIENT_ID = process.env.VITE_DISCORD_CLIENT_ID as string;
+const CLIENT_ID = process.env.DISCORD_CLIENT_ID as string;
 const GUILD_ID = process.env.DISCORD_GUILD_ID as string;
 
 const commands = [];

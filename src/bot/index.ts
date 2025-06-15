@@ -1,9 +1,9 @@
 import { Client, GatewayIntentBits, Collection } from "discord.js";
-import path from "path";
 import { fileURLToPath, pathToFileURL } from "url";
 import { readdirSync } from "fs";
-import dotenv from "dotenv";
 import type { Command } from "../types/types";
+import path from "path";
+import dotenv from "dotenv";
 
 // initialize .env variables
 dotenv.config();

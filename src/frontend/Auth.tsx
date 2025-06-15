@@ -18,12 +18,24 @@ function Auth() {
 	const [snackbarVisibility, setSnackbarVisibility] = useState(false);
 
 	// initialize environment variables
+	const ENVIRONMENT = import.meta.env.ENVIRONMENT as string;
+
+	const EXPRESS_URL =
+		ENVIRONMENT === "DEV"
+			? import.meta.env.VITE_EXPRESS_URL
+			: import.meta.env.VITE_PRODUCTION_EXPRESS_URL;
+
 	const OSU_CLIENT_ID = import.meta.env.VITE_OSU_CLIENT_ID as string;
-	const OSU_REDIRECT_URI = import.meta.env.VITE_OSU_REDIRECT_URI as string;
+	const OSU_REDIRECT_URI =
+		ENVIRONMENT === "DEV"
+			? import.meta.env.VITE_OSU_REDIRECT_URI
+			: import.meta.env.PRODUCTION_OSU_REDIRECT_URI;
 
 	const DISCORD_CLIENT_ID = import.meta.env.VITE_DISCORD_CLIENT_ID as string;
-	const DISCORD_REDIRECT_URI = import.meta.env
-		.VITE_DISCORD_REDIRECT_URI as string;
+	const DISCORD_REDIRECT_URI =
+		ENVIRONMENT === "DEV"
+			? import.meta.env.VITE_DISCORD_REDIRECT_URI
+			: import.meta.env.PRODUCTION_DISCORD_REDIRECT_URI;
 
 	// generates random UUID
 	const generateState = (): string => {
@@ -36,7 +48,7 @@ function Auth() {
 		const state = generateState();
 
 		try {
-			await fetch("https://aether-discord-bot.onrender.com/oauth/state", {
+			await fetch(`${EXPRESS_URL}/oauth/state`, {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({ state, provider }),
@@ -54,13 +66,10 @@ function Auth() {
 
 	const fetchProgress = async () => {
 		try {
-			const response = await fetch(
-				"https://aether-discord-bot.onrender.com/oauth/status",
-				{
-					method: "GET",
-					credentials: "include",
-				},
-			);
+			const response = await fetch(`${EXPRESS_URL}/oauth/status`, {
+				method: "GET",
+				credentials: "include",
+			});
 
 			if (response.ok) {
 				const data = await response.json();
@@ -112,7 +121,7 @@ function Auth() {
 		const getAccessToken = async (code: string, state: string) => {
 			try {
 				const fetchProvider = await fetch(
-					"https://aether-discord-bot.onrender.com/oauth/provider",
+					`${EXPRESS_URL}/oauth/provider`,
 					{
 						method: "POST",
 						headers: {
@@ -131,11 +140,9 @@ function Auth() {
 
 				let authEndpoint = "";
 				if (provider === "osu") {
-					authEndpoint =
-						"https://aether-discord-bot.onrender.com/oauth/osu";
+					authEndpoint = `${EXPRESS_URL}/oauth/osu`;
 				} else if (provider === "discord") {
-					authEndpoint =
-						"https://aether-discord-bot.onrender.com/oauth/discord";
+					authEndpoint = `${EXPRESS_URL}/oauth/discord`;
 				}
 
 				const accessTokenExchange = await fetch(authEndpoint, {

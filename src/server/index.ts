@@ -28,6 +28,10 @@ app.use("/oauth/osu", osuOauthRoute);
 app.use("/oauth/discord", discordOauthRoute);
 app.use("/oauth", stateOauthRoute);
 
+app.get("/", (req, res) => {
+	console.log("API is online");
+});
+
 app.listen(PORT, () => {
 	console.log(`Server is running on port ${PORT}`);
 });

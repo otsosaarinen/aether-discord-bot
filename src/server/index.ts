@@ -32,21 +32,14 @@ app.use("/oauth/osu", osuOauthRoute);
 app.use("/oauth/discord", discordOauthRoute);
 app.use("/oauth", stateOauthRoute);
 
-// Get __dirname in ES modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const distPath = path.resolve(__dirname, "../../dist");
 
-// Serve static files
-app.use(express.static(path.join(__dirname, "../../dist")));
+app.use(express.static(distPath));
 
-// API route
-app.get("/api", (_, res) => {
-	res.status(200).json({ message: "API is online" });
-});
-
-// SPA fallback
-app.get("*", (_, res) => {
-	res.sendFile(path.join(__dirname, "../../dist/index.html"));
+app.get("/", (_req, res) => {
+	res.sendFile(path.join(distPath, "index.html"));
 });
 
 app.listen(PORT, "0.0.0.0", () => {

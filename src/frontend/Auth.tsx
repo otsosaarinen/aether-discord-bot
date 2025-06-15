@@ -203,8 +203,14 @@ function Auth() {
 								src="/osu_logo.png"
 								alt="osu! logo"
 							/>
-							<p className="flex flex-row items-center justify-center">
-								Vaihe 1. Yhdistä osu! käyttäjäsi
+							<div className="flex flex-row items-center justify-center">
+								{osuOauthStatus ? (
+									<p className="text-neutral-500 line-through">
+										Vaihe 1. Yhdistä osu! käyttäjäsi
+									</p>
+								) : (
+									<p>Vaihe 1. Yhdistä osu! käyttäjäsi</p>
+								)}
 								<span className="ml-2">
 									{osuOauthStatus ? (
 										<DoneIcon sx={{ color: "#75FB4C" }} />
@@ -212,7 +218,7 @@ function Auth() {
 										""
 									)}
 								</span>
-							</p>
+							</div>
 
 							<Button
 								variant="contained"
@@ -228,8 +234,14 @@ function Auth() {
 								src="/discord_logo.png"
 								alt="discord logo"
 							/>
-							<p>
-								Vaihe 2. Yhdistä Discord käyttäjäsi
+							<div className="flex flex-row items-center justify-center">
+								{discordOauthStatus ? (
+									<p className="text-neutral-500 line-through">
+										Vaihe 2. Yhdistä Discord käyttäjäsi
+									</p>
+								) : (
+									<p>Vaihe 2. Yhdistä Discord käyttäjäsi</p>
+								)}
 								<span className="ml-2">
 									{discordOauthStatus ? (
 										<DoneIcon sx={{ color: "#75FB4C" }} />
@@ -237,7 +249,7 @@ function Auth() {
 										""
 									)}
 								</span>
-							</p>
+							</div>
 
 							<Button
 								variant="contained"

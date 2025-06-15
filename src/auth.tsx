@@ -36,7 +36,7 @@ function Auth() {
 				body: JSON.stringify({ state, provider }),
 			});
 		} catch (error) {
-			console.log("Something went wrong");
+			console.log("Something went wrong: ", error);
 		}
 
 		if (provider == "osu") {

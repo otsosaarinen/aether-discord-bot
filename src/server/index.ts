@@ -28,7 +28,7 @@ app.use("/oauth/osu", osuOauthRoute);
 app.use("/oauth/discord", discordOauthRoute);
 app.use("/oauth", stateOauthRoute);
 
-app.get("/", (req, res) => {
+app.get("/", () => {
 	console.log("API is online");
 });
 

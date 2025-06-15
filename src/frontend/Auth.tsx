@@ -241,7 +241,7 @@ function Auth() {
 
 							<Button
 								variant="contained"
-								disabled={discordOauthStatus}
+								disabled={!osuOauthStatus || discordOauthStatus}
 								onClick={() => OauthStart("discord")}
 							>
 								Yhdistä

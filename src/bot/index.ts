@@ -3,7 +3,7 @@ import path from "path";
 import { fileURLToPath, pathToFileURL } from "url";
 import { readdirSync } from "fs";
 import dotenv from "dotenv";
-import type { Command } from "./types/types";
+import type { Command } from "../types/types";
 
 // initialize .env variables
 dotenv.config();

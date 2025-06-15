@@ -1,6 +1,6 @@
 import { Events, MessageFlags } from "discord.js";
 import type { Interaction } from "discord.js";
-import { ExtendedClient } from "../index.js";
+import { ExtendedClient } from "../bot/index.js";
 
 export default {
 	name: Events.InteractionCreate,

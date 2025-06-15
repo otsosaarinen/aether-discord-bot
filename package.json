@@ -8,9 +8,12 @@
 		"build": "tsc -b && vite build",
 		"lint": "eslint .",
 		"preview": "vite preview",
-		"deploy_commands": "npx tsx src/deploy-commands.ts",
-		"bot": "npx nodemon --watch src --exec \"tsx\" src/index.ts",
-		"server": "npx tsx src/server/index.ts"
+		"deploy_commands": "npx tsx src/bot/deploy-commands.ts",
+		"bot": "npx nodemon --watch src --exec \"tsx\" src/bot/index.ts",
+		"server": "npx tsx src/server/index.ts",
+		"build:app": "tsc --build tsconfig.app.build.json",
+		"build:node": "tsc --build tsconfig.node.build.json",
+		"build_full": "npm run build:app && npm run build:node && vite build"
 	},
 	"dependencies": {
 		"@emotion/react": "^11.14.0",

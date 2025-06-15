@@ -2,6 +2,7 @@ import "./App.css";
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import Button from "@mui/material/Button";
+import DoneIcon from "@mui/icons-material/Done";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
@@ -10,6 +11,7 @@ function Auth() {
 	const [osuOauthStatus, setOsuOauthStatus] = useState<boolean>(false);
 	const [discordOauthStatus, setDiscordOauthStatus] =
 		useState<boolean>(false);
+	const [progressBarStatus, setProgressBarStatus] = useState<number>(0);
 
 	// initialize environment variables
 	const OSU_CLIENT_ID = import.meta.env.VITE_OSU_CLIENT_ID as string;
@@ -55,9 +57,19 @@ function Auth() {
 
 			if (response.ok) {
 				const data = await response.json();
-				setOsuOauthStatus(data.osuOauthDone);
-				setDiscordOauthStatus(data.discordOauthDone);
-				return;
+				const { osuOauthDone, discordOauthDone } = data;
+
+				setOsuOauthStatus(osuOauthDone);
+				setDiscordOauthStatus(discordOauthDone);
+
+				let progress = 0;
+				if (osuOauthDone && discordOauthDone) {
+					progress = 2;
+				} else if (osuOauthDone || discordOauthDone) {
+					progress = 1;
+				}
+
+				setProgressBarStatus(progress);
 			} else {
 				console.log("Couldn't fetch oauth status");
 			}
@@ -159,7 +171,16 @@ function Auth() {
 								src="/osu_logo.png"
 								alt="osu! logo"
 							/>
-							<p>Vaihe 1. Yhdistä osu! käyttäjäsi</p>
+							<p className="flex flex-row items-center justify-center">
+								Vaihe 1. Yhdistä osu! käyttäjäsi
+								<span className="ml-2">
+									{osuOauthStatus ? (
+										<DoneIcon sx={{ color: "#75FB4C" }} />
+									) : (
+										""
+									)}
+								</span>
+							</p>
 
 							<Button
 								variant="contained"
@@ -175,7 +196,16 @@ function Auth() {
 								src="/discord_logo.png"
 								alt="discord logo"
 							/>
-							<p>Vaihe 2. Yhdistä Discord käyttäjäsi</p>
+							<p>
+								Vaihe 2. Yhdistä Discord käyttäjäsi
+								<span className="ml-2">
+									{discordOauthStatus ? (
+										<DoneIcon sx={{ color: "#75FB4C" }} />
+									) : (
+										""
+									)}
+								</span>
+							</p>
 
 							<Button
 								variant="contained"
@@ -187,7 +217,10 @@ function Auth() {
 						</div>
 					</div>
 					<div>
-						<Stepper activeStep={0} alternativeLabel>
+						<Stepper
+							activeStep={progressBarStatus}
+							alternativeLabel
+						>
 							{steps.map((label) => (
 								<Step key={label}>
 									<StepLabel>

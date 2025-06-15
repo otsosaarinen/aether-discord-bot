@@ -60,9 +60,17 @@ router.post("/provider", async (req, res) => {
 router.get("/status", async (req, res) => {
 	const JWT_SECRET = process.env.JWT_SECRET as string;
 
-	let verifyJwt: JwtPayload;
+	let verifyJwt: JwtPayload | null;
 
 	try {
+		if (!req.cookies.token) {
+			res.status(200).json({
+				osuOauthDone: false,
+				discordOauthDone: false,
+			});
+			return;
+		}
+
 		verifyJwt = jwt.verify(req.cookies.token, JWT_SECRET) as JwtPayload;
 	} catch (error) {
 		console.log(error);

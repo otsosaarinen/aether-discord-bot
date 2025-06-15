@@ -6,12 +6,16 @@ import DoneIcon from "@mui/icons-material/Done";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
+import Alert from "@mui/material/Alert";
+import Snackbar from "@mui/material/Snackbar";
+import type { SnackbarCloseReason } from "@mui/material/Snackbar";
 
 function Auth() {
 	const [osuOauthStatus, setOsuOauthStatus] = useState<boolean>(false);
 	const [discordOauthStatus, setDiscordOauthStatus] =
 		useState<boolean>(false);
 	const [progressBarStatus, setProgressBarStatus] = useState<number>(0);
+	const [snackbarVisibility, setSnackbarVisibility] = useState(false);
 
 	// initialize environment variables
 	const OSU_CLIENT_ID = import.meta.env.VITE_OSU_CLIENT_ID as string;
@@ -65,6 +69,7 @@ function Auth() {
 				let progress = 0;
 				if (osuOauthDone && discordOauthDone) {
 					progress = 2;
+					setSnackbarVisibility(true);
 				} else if (osuOauthDone || discordOauthDone) {
 					progress = 1;
 				}
@@ -149,11 +154,24 @@ function Auth() {
 		getAccessToken(code, state);
 	}, []);
 
+	// progress bar steps
 	const steps = [
 		"Yhdistä osu! käyttäjäsi",
 		"Yhdistä Discord käyttäjäsi",
 		"Valmista",
 	];
+
+	// variables for snackbar
+	const handleClose = (
+		_event?: React.SyntheticEvent | Event,
+		reason?: SnackbarCloseReason,
+	) => {
+		if (reason === "clickaway") {
+			return;
+		}
+
+		setSnackbarVisibility(false);
+	};
 
 	return (
 		<>
@@ -229,6 +247,26 @@ function Auth() {
 								</Step>
 							))}
 						</Stepper>
+					</div>
+					<div>
+						<Snackbar
+							open={snackbarVisibility}
+							autoHideDuration={7000}
+							onClose={handleClose}
+							anchorOrigin={{
+								vertical: "top",
+								horizontal: "center",
+							}}
+						>
+							<Alert
+								onClose={handleClose}
+								severity="success"
+								variant="filled"
+								sx={{ width: "100%" }}
+							>
+								Rekisteröinti onnistui.
+							</Alert>
+						</Snackbar>
 					</div>
 				</div>
 				<div className="flex h-14 w-full items-center justify-center bg-[#4981ff]">

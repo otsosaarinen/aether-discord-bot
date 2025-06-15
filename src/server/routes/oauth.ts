@@ -3,6 +3,10 @@ import { saveState, fetchState, fetchOauthStatus } from "../../db/queries";
 import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
 
+interface JwtPayload {
+	id: number;
+}
+
 dotenv.config();
 
 const router = Router();
@@ -59,10 +63,10 @@ router.post("/provider", async (req, res) => {
 router.get("/status", async (req, res) => {
 	const JWT_SECRET = process.env.JWT_SECRET as string;
 
-	let verifyJwt: any;
+	let verifyJwt: JwtPayload;
 
 	try {
-		verifyJwt = jwt.verify(req.cookies.token, JWT_SECRET);
+		verifyJwt = jwt.verify(req.cookies.token, JWT_SECRET) as JwtPayload;
 	} catch (error) {
 		console.log(error);
 		res.status(400).send("Problem with JWT");

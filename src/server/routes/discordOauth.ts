@@ -2,6 +2,7 @@ import { Router } from "express";
 import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
 import { addDiscordDataToDb, updateDiscordOauthStatus } from "../../db/queries";
+import type { JwtPayload } from "../../types/types";
 
 dotenv.config();
 
@@ -20,10 +21,10 @@ router.post("/", async (req, res) => {
 		return;
 	}
 
-	let verifyJwt: any;
+	let verifyJwt: JwtPayload;
 
 	try {
-		verifyJwt = jwt.verify(req.cookies.token, JWT_SECRET);
+		verifyJwt = jwt.verify(req.cookies.token, JWT_SECRET) as JwtPayload;
 	} catch (error) {
 		console.log(error);
 		res.status(400).send("Problem with JWT");

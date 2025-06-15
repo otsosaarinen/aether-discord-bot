@@ -2,10 +2,7 @@ import { Router } from "express";
 import { saveState, fetchState, fetchOauthStatus } from "../../db/queries";
 import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
-
-interface JwtPayload {
-	id: number;
-}
+import type { JwtPayload } from "../../types/types";
 
 dotenv.config();
 

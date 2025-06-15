@@ -36,7 +36,7 @@ function Auth() {
 		const state = generateState();
 
 		try {
-			await fetch("http://localhost:3001/oauth/state", {
+			await fetch("https://aether-discord-bot.onrender.com/oauth/state", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({ state, provider }),
@@ -54,10 +54,13 @@ function Auth() {
 
 	const fetchProgress = async () => {
 		try {
-			const response = await fetch("http://localhost:3001/oauth/status", {
-				method: "GET",
-				credentials: "include",
-			});
+			const response = await fetch(
+				"https://aether-discord-bot.onrender.com/oauth/status",
+				{
+					method: "GET",
+					credentials: "include",
+				},
+			);
 
 			if (response.ok) {
 				const data = await response.json();
@@ -109,7 +112,7 @@ function Auth() {
 		const getAccessToken = async (code: string, state: string) => {
 			try {
 				const fetchProvider = await fetch(
-					"http://localhost:3001/oauth/provider",
+					"https://aether-discord-bot.onrender.com/oauth/provider",
 					{
 						method: "POST",
 						headers: {
@@ -128,9 +131,11 @@ function Auth() {
 
 				let authEndpoint = "";
 				if (provider === "osu") {
-					authEndpoint = "http://localhost:3001/oauth/osu";
+					authEndpoint =
+						"https://aether-discord-bot.onrender.com/oauth/osu";
 				} else if (provider === "discord") {
-					authEndpoint = "http://localhost:3001/oauth/discord";
+					authEndpoint =
+						"https://aether-discord-bot.onrender.com/oauth/discord";
 				}
 
 				const accessTokenExchange = await fetch(authEndpoint, {

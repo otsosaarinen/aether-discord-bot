@@ -18,7 +18,7 @@ function Auth() {
 	const [snackbarVisibility, setSnackbarVisibility] = useState(false);
 
 	// initialize environment variables
-	const ENVIRONMENT = import.meta.env.ENVIRONMENT as string;
+	const ENVIRONMENT = import.meta.env.VITE_ENVIRONMENT as string;
 
 	const EXPRESS_URL =
 		ENVIRONMENT === "DEV"

@@ -9,7 +9,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const DISCORD_TOKEN = process.env.DISCORD_TOKEN as string;
-const CLIENT_ID = process.env.DISCORD_CLIENT_ID as string;
+const CLIENT_ID = process.env.VITE_DISCORD_CLIENT_ID as string;
 const GUILD_ID = process.env.DISCORD_GUILD_ID as string;
 
 const commands = [];

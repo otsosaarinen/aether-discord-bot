@@ -11,9 +11,9 @@ const router = Router();
 router.post("/", async (req, res) => {
 	const code = req.body.code;
 
-	const CLIENT_ID = process.env.DISCORD_CLIENT_ID as string;
+	const CLIENT_ID = process.env.VITE_DISCORD_CLIENT_ID as string;
 	const CLIENT_SECRET = process.env.DISCORD_CLIENT_SECRET as string;
-	const REDIRECT_URI = process.env.DISCORD_REDIRECT_URI as string;
+	const REDIRECT_URI = process.env.VITE_DISCORD_REDIRECT_URI as string;
 	const JWT_SECRET = process.env.JWT_SECRET as string;
 
 	if (!CLIENT_ID || !CLIENT_SECRET || !REDIRECT_URI) {

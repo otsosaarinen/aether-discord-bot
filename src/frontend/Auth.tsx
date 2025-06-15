@@ -182,6 +182,20 @@ function Auth() {
 							5<span className="text-white">DST</span>3
 						</h1>
 					</div>
+					<div>
+						<Stepper
+							activeStep={progressBarStatus}
+							alternativeLabel
+						>
+							{steps.map((label) => (
+								<Step key={label}>
+									<StepLabel>
+										<p className="text-white">{label}</p>
+									</StepLabel>
+								</Step>
+							))}
+						</Stepper>
+					</div>
 					<div className="flex flex-col items-center justify-center gap-10 text-xl text-white">
 						<div className="flex flex-col items-center justify-center gap-3">
 							<img
@@ -234,20 +248,7 @@ function Auth() {
 							</Button>
 						</div>
 					</div>
-					<div>
-						<Stepper
-							activeStep={progressBarStatus}
-							alternativeLabel
-						>
-							{steps.map((label) => (
-								<Step key={label}>
-									<StepLabel>
-										<p className="text-white">{label}</p>
-									</StepLabel>
-								</Step>
-							))}
-						</Stepper>
-					</div>
+
 					<div>
 						<Snackbar
 							open={snackbarVisibility}

@@ -3,6 +3,7 @@ import path from "path";
 import { fileURLToPath, pathToFileURL } from "url";
 import { readdirSync } from "fs";
 import dotenv from "dotenv";
+import type { Command } from "./types/types";
 
 // initialize .env variables
 dotenv.config();
@@ -10,7 +11,7 @@ const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
 
 // extend the client class to add "commands" property
 export class ExtendedClient extends Client {
-	public commands: Collection<string, any>;
+	public commands: Collection<string, Command>;
 
 	constructor() {
 		super({

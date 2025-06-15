@@ -1,4 +1,5 @@
 import { REST, Routes } from "discord.js";
+import type { RESTPostAPIChatInputApplicationCommandsJSONBody } from "discord.js";
 import path from "path";
 import { fileURLToPath, pathToFileURL } from "url";
 import { readdirSync } from "fs";
@@ -51,10 +52,10 @@ const rest = new REST().setToken(DISCORD_TOKEN);
 		);
 
 		// The put method is used to fully refresh all commands in the guild with the current set
-		const data = await rest.put(
+		const data = (await rest.put(
 			Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID),
 			{ body: commands },
-		);
+		)) as RESTPostAPIChatInputApplicationCommandsJSONBody[];
 
 		console.log(
 			`Successfully reloaded ${data.length} application (/) commands.`,

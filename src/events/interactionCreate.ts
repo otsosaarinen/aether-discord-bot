@@ -1,4 +1,5 @@
-import { Events, MessageFlags, Interaction } from "discord.js";
+import { Events, MessageFlags } from "discord.js";
+import type { Interaction } from "discord.js";
 import { ExtendedClient } from "../index.js";
 
 export default {

@@ -183,7 +183,7 @@ function Auth() {
 			<div className="font-poppins flex h-screen flex-col justify-between bg-neutral-900 text-white">
 				<div className="flex h-full flex-col items-center justify-center gap-10">
 					<div className="flex flex-col items-center justify-center">
-						<h1 className="text-9xl font-bold text-[#4981ff] italic">
+						<h1 className="text-8xl font-bold text-[#4981ff] italic sm:text-9xl">
 							5<span className="text-white">DST</span>3
 						</h1>
 					</div>

@@ -289,7 +289,7 @@ function Auth() {
 				</div>
 				<div className="flex h-14 w-full items-center justify-center bg-[#4981ff]">
 					<p>
-						Site developed by{" "}
+						Developed by{" "}
 						<Link
 							to="https://osu.ppy.sh/users/6263040"
 							className="hover:underline"

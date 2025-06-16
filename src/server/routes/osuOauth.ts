@@ -1,7 +1,7 @@
-import { Router } from "express";
 import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
 import { addOsuDataToDb, updateOsuOauthStatus } from "../../db/queries";
+import { Router } from "express";
 
 dotenv.config();
 

@@ -23,6 +23,7 @@ export async function fetchState(clientState: string) {
 		throw new Error("State not found from db");
 	}
 
+	// mark state as used
 	const editToUsed = await prisma.oauthState.update({
 		where: {
 			state: stateMatch.state,

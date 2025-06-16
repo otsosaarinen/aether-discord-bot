@@ -11,6 +11,7 @@ import Snackbar from "@mui/material/Snackbar";
 import type { SnackbarCloseReason } from "@mui/material/Snackbar";
 
 function Auth() {
+	// initialize variables
 	const [osuOauthStatus, setOsuOauthStatus] = useState<boolean>(false);
 	const [discordOauthStatus, setDiscordOauthStatus] =
 		useState<boolean>(false);
@@ -18,24 +19,14 @@ function Auth() {
 	const [snackbarVisibility, setSnackbarVisibility] = useState(false);
 
 	// initialize environment variables
-	const ENVIRONMENT = import.meta.env.VITE_ENVIRONMENT as string;
-
-	const EXPRESS_URL =
-		ENVIRONMENT === "DEV"
-			? import.meta.env.VITE_EXPRESS_URL
-			: import.meta.env.VITE_PRODUCTION_EXPRESS_URL;
-
+	const EXPRESS_URL = import.meta.env.VITE_EXPRESS_URL as string;
 	const OSU_CLIENT_ID = import.meta.env.VITE_OSU_CLIENT_ID as string;
-	const OSU_REDIRECT_URI =
-		ENVIRONMENT === "DEV"
-			? import.meta.env.VITE_OSU_REDIRECT_URI
-			: import.meta.env.PRODUCTION_OSU_REDIRECT_URI;
-
+	const OSU_REDIRECT_URI = import.meta.env.VITE_OSU_REDIRECT_URI as string;
 	const DISCORD_CLIENT_ID = import.meta.env.VITE_DISCORD_CLIENT_ID as string;
-	const DISCORD_REDIRECT_URI =
-		ENVIRONMENT === "DEV"
-			? import.meta.env.VITE_DISCORD_REDIRECT_URI
-			: import.meta.env.PRODUCTION_DISCORD_REDIRECT_URI;
+	const DISCORD_REDIRECT_URI = import.meta.env.VITE_DISCORD_REDIRECT_URI;
+	console.log(
+		`Environment variables: ${EXPRESS_URL} ${OSU_CLIENT_ID} ${OSU_REDIRECT_URI} ${DISCORD_CLIENT_ID} ${DISCORD_REDIRECT_URI}`,
+	);
 
 	// generates random UUID
 	const generateState = (): string => {
@@ -53,17 +44,22 @@ function Auth() {
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({ state, provider }),
 			});
-		} catch (error) {
-			console.log("Something went wrong: ", error);
-		}
 
-		if (provider == "osu") {
-			window.location.href = `https://osu.ppy.sh/oauth/authorize?client_id=${OSU_CLIENT_ID}&redirect_uri=${OSU_REDIRECT_URI}&response_type=code&state=${state}`;
-		} else if (provider == "discord") {
-			window.location.href = `https://discord.com/oauth2/authorize?client_id=${DISCORD_CLIENT_ID}&scope=identify&prompt=none&redirect_uri=${DISCORD_REDIRECT_URI}&response_type=code&state=${state}`;
+			if (provider == "osu") {
+				window.location.href = `https://osu.ppy.sh/oauth/authorize?client_id=${OSU_CLIENT_ID}&redirect_uri=${OSU_REDIRECT_URI}&response_type=code&state=${state}`;
+			} else if (provider == "discord") {
+				window.location.href = `https://discord.com/oauth2/authorize?client_id=${DISCORD_CLIENT_ID}&scope=identify&prompt=none&redirect_uri=${DISCORD_REDIRECT_URI}&response_type=code&state=${state}`;
+			}
+		} catch (error) {
+			console.log(
+				"Something went wrong while saving request state: ",
+				error,
+			);
+			return;
 		}
 	};
 
+	// sends request to backend and receives OAuth process status as a response, sets the progressbar and snackbar visibility based on the response
 	const fetchProgress = async () => {
 		try {
 			const response = await fetch(`${EXPRESS_URL}/oauth/status`, {
@@ -95,12 +91,13 @@ function Auth() {
 		}
 	};
 
-	// run fetchProgress on initial page load
+	// run fetchProgress on page load
 	useEffect(() => {
 		fetchProgress();
 	}, []);
 
-	// when page loads check if url has code and state parameters, exit function if they dont exist
+	// on page load check if url has code and state parameters, exit if they dont exist
+	// if code and state exist send request to backend to verify that url state matches the initial state before redirect to OAuth page
 	useEffect(() => {
 		const urlParams = new URLSearchParams(window.location.search);
 		const code = urlParams.get("code");
@@ -110,6 +107,7 @@ function Auth() {
 			return;
 		}
 
+		// clear code and state from the url
 		urlParams.delete("code");
 		urlParams.delete("state");
 		const newUrl =
@@ -117,7 +115,6 @@ function Auth() {
 			(urlParams.toString() ? "?" + urlParams.toString() : "");
 		window.history.replaceState(null, "", newUrl);
 
-		// if code and state parameters exist in the url, send request to backend to retrieve the saved state
 		const getAccessToken = async (code: string, state: string) => {
 			try {
 				const fetchProvider = await fetch(
@@ -134,7 +131,7 @@ function Auth() {
 				if (!fetchProvider.ok)
 					throw new Error("Invalid state or provider");
 
-				// extract provider from succesful state match request, sends request either to osu or discord api to exchange code to access token
+				// extract provider from succesful state match, sends request either to osu or discord backend api route which manages to access token exchange
 				const data = await fetchProvider.json();
 				const provider = data.provider;
 
@@ -166,7 +163,7 @@ function Auth() {
 		getAccessToken(code, state);
 	}, []);
 
-	// progress bar steps
+	// steps for progressbar
 	const steps = [
 		"Yhdistä osu! käyttäjäsi",
 		"Yhdistä Discord käyttäjäsi",
@@ -181,7 +178,6 @@ function Auth() {
 		if (reason === "clickaway") {
 			return;
 		}
-
 		setSnackbarVisibility(false);
 	};
 

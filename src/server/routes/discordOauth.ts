@@ -1,7 +1,7 @@
-import { Router } from "express";
 import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
 import { addDiscordDataToDb, updateDiscordOauthStatus } from "../../db/queries";
+import { Router } from "express";
 import type { JwtPayload } from "../../types/types";
 
 dotenv.config();

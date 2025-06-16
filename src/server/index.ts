@@ -5,21 +5,19 @@ import cookieParser from "cookie-parser";
 import osuOauthRoute from "./routes/osuOauth";
 import discordOauthRoute from "./routes/discordOauth";
 import stateOauthRoute from "./routes/oauth";
-
 import path from "path";
 import { fileURLToPath } from "url";
 
 dotenv.config();
 
 const app = express();
-const PORT = Number(process.env.PORT) || 3001;
+const PORT = Number(process.env.EXPRESS_PORT) || 3001;
 
 app.use(
 	cors({
 		origin: [
 			"http://localhost:5173",
 			"http://localhost:4173",
-			"http://localhost:3001",
 			"https://aether-discord-bot.onrender.com",
 		],
 		credentials: true,

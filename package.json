@@ -11,10 +11,9 @@
 		"deploy_commands": "npx tsx src/bot/deploy-commands.ts",
 		"bot": "npx nodemon --watch src --exec \"tsx\" src/bot/index.ts",
 		"server": "npx tsx src/server/index.ts",
-		"web:start": "vite",
 		"server:start": "npx tsx src/server/index.ts",
 		"bot:start": "npx tsx src/bot/index.ts",
-		"all": "concurrently \"npm run deploy_commands\" \"npm run web:start\" \"npm run server:start\" \"npm run bot:start\""
+		"all": "concurrently \"npm run deploy_commands\" \"npm run dev\" \"npm run server:start\" \"npm run bot:start\""
 	},
 	"dependencies": {
 		"@emotion/react": "^11.14.0",

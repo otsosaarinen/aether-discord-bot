@@ -1,14 +1,14 @@
-import { Router } from "express";
-import { saveState, fetchState, fetchOauthStatus } from "../../db/queries";
 import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
+import { saveState, fetchState, fetchOauthStatus } from "../../db/queries";
+import { Router } from "express";
 import type { JwtPayload } from "../../types/types";
 
 dotenv.config();
 
 const router = Router();
 
-// saved the initial state before user is redirected to oauth page
+// save the initial state created before user is redirected to OAuth page
 router.post("/state", async (req, res) => {
 	try {
 		const { state, provider } = req.body;
@@ -40,7 +40,7 @@ router.post("/provider", async (req, res) => {
 			return;
 		}
 
-		// fetch state saved to db and compare it with state received from client
+		// query through db if initially saved state
 		const data = await fetchState(state);
 
 		if (!data) {

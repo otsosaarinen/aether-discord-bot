@@ -20,6 +20,7 @@ app.use(
 			"http://localhost:4173",
 			"http://localhost:3001",
 			"https://aether-discord-bot.onrender.com",
+			"https://5dst.org/",
 		],
 		credentials: true,
 	}),

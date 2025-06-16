@@ -5,7 +5,7 @@ export const data = new SlashCommandBuilder()
 	.setDescription("Rekisteröidy 5 digit suomi turnaukseen!");
 
 export async function execute(interaction: ChatInputCommandInteraction) {
-	const registration_url = "https://aether-discord-bot.onrender.com";
+	const registration_url = "https://5dst.org/";
 
 	await interaction.reply({
 		content: `Klikkaa linkkia rekisteröityäksesi: **${registration_url}**`,

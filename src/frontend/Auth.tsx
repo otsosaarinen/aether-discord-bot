@@ -24,9 +24,6 @@ function Auth() {
 	const OSU_REDIRECT_URI = import.meta.env.VITE_OSU_REDIRECT_URI as string;
 	const DISCORD_CLIENT_ID = import.meta.env.VITE_DISCORD_CLIENT_ID as string;
 	const DISCORD_REDIRECT_URI = import.meta.env.VITE_DISCORD_REDIRECT_URI;
-	console.log(
-		`Environment variables: ${EXPRESS_URL} ${OSU_CLIENT_ID} ${OSU_REDIRECT_URI} ${DISCORD_CLIENT_ID} ${DISCORD_REDIRECT_URI}`,
-	);
 
 	// generates random UUID
 	const generateState = (): string => {

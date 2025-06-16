@@ -16,11 +16,11 @@ const PORT = Number(process.env.PORT) || 3001;
 app.use(
 	cors({
 		origin: [
-			"http://localhost:5173/",
-			"http://localhost:4173/",
-			"http://localhost:3001/",
-			"https://aether-discord-bot.onrender.com/",
-			"https://5dst.org/",
+			"http://localhost:5173",
+			"http://localhost:4173",
+			"http://localhost:3001",
+			"https://aether-discord-bot.onrender.com",
+			"https://5dst.org",
 		],
 		credentials: true,
 	}),
